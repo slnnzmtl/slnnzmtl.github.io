@@ -958,8 +958,10 @@ function onDrop(event) {
 }
 
 function putElement(element, dropzone) {
+  // let elem = {};
   var drop = {};
-  var events = _cookies_js__WEBPACK_IMPORTED_MODULE_0__.getEvents();
+  var events = _cookies_js__WEBPACK_IMPORTED_MODULE_0__.getEvents(); // elem = element.querySelector('.event-flag__button');
+
   element.day = element.getAttribute('day');
   element.time = element.getAttribute('time');
   drop.day = dropzone.getAttribute('day');
