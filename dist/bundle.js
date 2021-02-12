@@ -1300,6 +1300,7 @@ function putElement(element, dropzone) {
 
   if (dropzoneCheck(events, dropzone)) {
     dropzone.appendChild(element);
+    console.log(dropzone);
     events.forEach(function (item) {
       if (item.day === element.day && item.time === element.time) {
         item.day = drop.day;
@@ -1314,9 +1315,12 @@ function putElement(element, dropzone) {
 }
 
 function dropzoneCheck(events, drop) {
-  if (drop.innerHTML) {
-    return false;
-  } else {
+  if (drop.tagName === "TD") {
+    events.forEach(function (item) {
+      if (item.day === drop.dataset.day && item.time === drop.dataset.time) {
+        return false;
+      }
+    });
     return true;
   }
 }
