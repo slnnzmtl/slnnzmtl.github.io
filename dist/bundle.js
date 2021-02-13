@@ -1187,7 +1187,7 @@ customElements.define("select-multiply", /*#__PURE__*/function (_HTMLElement) {
         }
       }
 
-      this.selectValueData = selectedItems.length ? selectedItems.join(", ") : "Choose members";
+      this.selectValueData = selectedItems.length ? selectedItems.join(",") : "Choose members";
     }
   }, {
     key: "showDropDown",
