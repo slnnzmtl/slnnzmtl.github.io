@@ -47,10 +47,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ Auth)
 /* harmony export */ });
 /* harmony import */ var _authComponent_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./authComponent.html */ "./components/authComponent/authComponent.html");
-/* harmony import */ var _assets_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/data */ "./assets/data.js");
-/* harmony import */ var _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/ComponentsHelper */ "./utils/ComponentsHelper.js");
-/* harmony import */ var _utils_roles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/roles */ "./utils/roles/index.js");
-/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/cookies */ "./utils/cookies.js");
+/* harmony import */ var _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/ComponentsHelper */ "./utils/ComponentsHelper.js");
+/* harmony import */ var _utils_roles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/roles */ "./utils/roles/index.js");
+/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/cookies */ "./utils/cookies.js");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/eventBus */ "./utils/eventBus.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _authComponent_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./authComponent.scss */ "./components/authComponent/authComponent.scss");
@@ -82,6 +82,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+ // import {participants} from "../../assets/data";
 
 
 
@@ -102,7 +103,7 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
 
     _this = _super.call(this);
     _this.data = {
-      participants: _assets_data__WEBPACK_IMPORTED_MODULE_1__.participants
+      participants: []
     };
     return _this;
   }
@@ -112,30 +113,37 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
     value: function connectedCallback() {
       var _this2 = this;
 
-      this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_2__.default.parseElement(_authComponent_html__WEBPACK_IMPORTED_MODULE_0__.default));
-      this.classList.add("auth-wrapper");
-      this.select = this.querySelector(".auth__select");
-      this.button = this.querySelector(".auth__button");
-      _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_2__.default.elementMultiplier('option', ['value'], this.select, this.data.participants.map(function (item) {
-        return item.name;
-      }));
-      this.select.querySelectorAll("option").forEach(function (item) {
-        item.innerText = item.value;
-      });
+      this.data.participants = _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.users;
+      this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__.default.parseElement(_authComponent_html__WEBPACK_IMPORTED_MODULE_0__.default));
+      this.classList.add('auth-wrapper');
+      this.select = this.querySelector('.auth__select');
+      this.button = this.querySelector('.auth__button');
+      this.fillUsers(this.select, this.data.participants);
 
       this.button.onclick = function () {
         return _this2.confirm(_this2.select.value);
       };
     }
   }, {
+    key: "fillUsers",
+    value: function fillUsers(select, users) {
+      _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__.default.elementMultiplier('option', ['value'], select, users.map(function (item) {
+        return item.data.name;
+      }));
+      this.select.querySelectorAll('option').forEach(function (item) {
+        item.innerText = item.value;
+      });
+    }
+  }, {
     key: "confirm",
     value: function confirm(user) {
       var userObject = this.data.participants.find(function (item) {
-        return item.name === user;
+        return item.data.name === user;
       });
-      var newUser = userObject.isAdmin ? new _utils_roles__WEBPACK_IMPORTED_MODULE_3__.Admin(userObject) : new _utils_roles__WEBPACK_IMPORTED_MODULE_3__.User(userObject);
-      _utils_cookies__WEBPACK_IMPORTED_MODULE_4__.setCookie("currentUser", JSON.stringify(newUser));
-      (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_5__.publish)("login");
+      userObject = userObject.data;
+      var newUser = userObject.isAdmin === 'true' ? new _utils_roles__WEBPACK_IMPORTED_MODULE_2__.Admin(userObject) : new _utils_roles__WEBPACK_IMPORTED_MODULE_2__.User(userObject);
+      _utils_cookies__WEBPACK_IMPORTED_MODULE_3__.setCookie('currentUser', JSON.stringify(newUser));
+      (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_5__.publish)('login');
       this.remove();
     }
   }]);
@@ -158,14 +166,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ calendarComponent)
 /* harmony export */ });
-/* harmony import */ var _calendarComponent_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./calendarComponent.scss */ "./components/calendarComponent/calendarComponent.scss");
-/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/cookies */ "./utils/cookies.js");
+/* harmony import */ var _eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../eventFlag/eventFlag */ "./components/eventFlag/eventFlag.js");
+/* harmony import */ var _calendarComponent_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendarComponent.scss */ "./components/calendarComponent/calendarComponent.scss");
 /* harmony import */ var _assets_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/data */ "./assets/data.js");
 /* harmony import */ var _utils_draggable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/draggable */ "./utils/draggable.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/eventBus */ "./utils/eventBus.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../removeEvent/removeEvent */ "./components/removeEvent/removeEvent.js");
-/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -204,9 +211,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-var me = "calendar-component";
-var filter = "All members";
+var filter = 'All members';
 
 var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
   _inherits(calendarComponent, _HTMLElement);
@@ -214,72 +219,62 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
   var _super = _createSuper(calendarComponent);
 
   function calendarComponent() {
-    var _this2;
-
     _classCallCheck(this, calendarComponent);
 
-    _this2 = _super.call(this);
-    _this2.data = {
-      isAdmin: _utils_cookies__WEBPACK_IMPORTED_MODULE_1__.getCookie("currentUser") ? JSON.parse(_utils_cookies__WEBPACK_IMPORTED_MODULE_1__.getCookie("currentUser")).isAdmin : "null"
-    };
-    return _this2;
+    return _super.call(this);
   }
 
   _createClass(calendarComponent, [{
     key: "connectedCallback",
     value: function connectedCallback() {
-      var _this3 = this;
-
-      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_2__.workingHours));
-
       var _this = this;
 
-      this.classList.add("calendar");
-      _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__.subscribe("participantFilterChanged", function (value) {
+      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_2__.workingHours, _assets_data__WEBPACK_IMPORTED_MODULE_2__.workingDays));
+      this.classList.add('calendar');
+      _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__.subscribe('participantFilterChanged', function (value) {
         filter = value;
 
         _this.fillTable();
       });
-      _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__.subscribe("refreshEvents", function () {
-        _this3.getData();
+      _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__.subscribe('refreshEvents', function () {
+        _this.getData();
       });
-      this.getData();
+      this.fillTable();
     }
   }, {
     key: "getData",
     value: function getData() {
-      var _this4 = this;
+      var _this2 = this;
 
-      _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.getEvents().then(function () {
-        _this4.fillTable();
+      _utils_store__WEBPACK_IMPORTED_MODULE_5__.default.getEvents().then(function () {
+        _this2.fillTable();
       });
     }
   }, {
     key: "createTable",
-    value: function createTable(hours) {
-      var table = document.createElement("table");
-      var tableHeader = document.createElement("tr");
-      var workingDays = _assets_data__WEBPACK_IMPORTED_MODULE_2__.workingDays;
-      tableHeader.insertAdjacentHTML("afterbegin", "\n      <th>Time</th>\n    ");
-      workingDays.forEach(function (item) {
-        var th = document.createElement("th");
+    value: function createTable(hours, days) {
+      var table = document.createElement('table');
+      var tableHeader = document.createElement('tr');
+      tableHeader.insertAdjacentHTML('afterbegin', "\n      <th>Time</th>\n    ");
+      days.forEach(function (item) {
+        var th = document.createElement('th');
         th.innerText = item;
         tableHeader.appendChild(th);
       });
-      tableHeader.classList.add("table-header");
+      tableHeader.classList.add('table-header');
       table.appendChild(tableHeader);
       hours.forEach(function (hour) {
-        var tr = document.createElement("tr");
-        var th = document.createElement("th");
-        th.classList.add("row-header");
+        var tr = document.createElement('tr');
+        var th = document.createElement('th');
+        th.classList.add('row-header');
         th.innerText = "".concat(hour, ":00");
         tr.appendChild(th);
-        workingDays.forEach(function (item) {
-          var td = document.createElement("td");
+        days.forEach(function (item) {
+          var td = document.createElement('td');
           td.dataset.day = item;
           td.dataset.time = hour;
-          td.setAttribute("ondragover", "onDragOver(event)");
-          td.setAttribute("ondrop", "onDrop(event)");
+          td.setAttribute('ondragover', 'onDragOver(event)');
+          td.setAttribute('ondrop', 'onDrop(event)');
           tr.appendChild(td);
         });
         table.appendChild(tr);
@@ -290,62 +285,45 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
     key: "fillTable",
     value: function () {
       var _fillTable = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _this5 = this;
-
         var table, events, tableClone, tableCells;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                table = this.querySelector("table");
+                table = this.querySelector('table');
                 _context.next = 3;
                 return this.filterEvents();
 
               case 3:
                 events = _context.sent;
-                console.log(events);
                 tableClone = table.cloneNode(true);
-                tableCells = tableClone.querySelectorAll("tr td");
+                tableCells = tableClone.querySelectorAll('tr td');
 
                 if (events.length) {
-                  _context.next = 9;
+                  _context.next = 8;
                   break;
                 }
 
-                throw new Error("No events");
+                throw new Error('No events');
 
-              case 9:
+              case 8:
                 events.forEach(function (event) {
                   tableCells.forEach(function (cell) {
                     if (cell.dataset.day === event.data.day && cell.dataset.time === event.data.time) {
-                      var flagElement = document.createElement("div");
-                      var flagElementName = document.createElement("p");
-                      var flagElementButton = document.createElement("button");
-                      flagElement.classList.add("event-flag");
-
-                      if (_this5.data.isAdmin) {
-                        flagElement.draggable = "true";
-                        flagElement.setAttribute("ondragstart", "onDragStart(event)");
-                      }
-
-                      flagElement.dataset.day = event.data.day;
-                      flagElement.dataset.time = event.data.time;
-                      flagElement.dataset.id = event.id;
-                      flagElementName.classList.add("event-flag__name");
-                      flagElementName.innerText = event.data.name;
-                      flagElementButton.classList.add("event-flag__button");
-                      flagElementButton.innerText = "X";
-                      flagElement.appendChild(flagElementName);
-                      flagElement.appendChild(flagElementButton);
-                      cell.insertAdjacentElement('afterbegin', flagElement);
+                      var flag = new _eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_0__.default({
+                        id: event.id,
+                        name: event.data.name,
+                        day: event.data.day,
+                        time: event.data.time
+                      });
+                      cell.appendChild(flag);
                     }
                   });
                 });
                 table.replaceWith(tableClone);
-                this.removeButtonsAddSettings();
                 return _context.abrupt("return", table);
 
-              case 13:
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -362,23 +340,10 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
   }, {
     key: "clearTable",
     value: function clearTable() {
-      var flags = document.querySelectorAll(".event-flag");
+      var flags = document.querySelectorAll('.event-flag');
       flags.forEach(function (item) {
         item.remove();
       });
-    }
-  }, {
-    key: "showRemoveWindow",
-    value: function showRemoveWindow(target) {
-      var main = document.querySelector("#main");
-      var removeWindow;
-      var parent = {};
-      parent.name = target.parentElement.querySelector(".event-flag__name").textContent;
-      parent.day = target.parentElement.dataset.day;
-      parent.time = target.parentElement.dataset.time;
-      parent.id = target.parentElement.dataset.id;
-      removeWindow = new _removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_5__.default(parent);
-      main.insertAdjacentElement("afterbegin", removeWindow);
     }
   }, {
     key: "filterEvents",
@@ -389,13 +354,13 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                events = _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.events;
-                value = filter === "Choose members" ? "" : filter;
+                events = _utils_store__WEBPACK_IMPORTED_MODULE_5__.default.events;
+                value = filter === 'Choose members' ? '' : filter;
                 this.clearTable();
                 result = [];
 
-                if (value !== "All members") {
-                  if (events && events !== "undefined") {
+                if (value !== 'All members') {
+                  if (events && events !== 'undefined') {
                     events.forEach(function (item) {
                       if (item.data.participants.includes(value)) {
                         result.push(item);
@@ -422,28 +387,12 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
 
       return filterEvents;
     }()
-  }, {
-    key: "removeButtonsAddSettings",
-    value: function removeButtonsAddSettings() {
-      var _this6 = this;
-
-      var _this = this;
-
-      var buttons = this.querySelectorAll(".event-flag__button");
-      buttons.forEach(function (button) {
-        button.style.display = _this6.data.isAdmin ? "block" : "none";
-        button.addEventListener("click", function (e) {
-          _this.showRemoveWindow(e.target);
-        });
-      });
-    }
   }]);
 
   return calendarComponent;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
 
 
-;
 
 /***/ }),
 
@@ -465,7 +414,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/ComponentsHelper */ "./utils/ComponentsHelper.js");
 /* harmony import */ var _components_newEvent_newEvent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/newEvent/newEvent */ "./components/newEvent/newEvent.js");
 /* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/cookies */ "./utils/cookies.js");
-/* harmony import */ var _calendarHeader_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./calendarHeader.scss */ "./components/calendarHeader/calendarHeader.scss");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
+/* harmony import */ var _calendarHeader_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./calendarHeader.scss */ "./components/calendarHeader/calendarHeader.scss");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -502,6 +452,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var CalendarHeader = /*#__PURE__*/function (_HTMLElement) {
   _inherits(CalendarHeader, _HTMLElement);
 
@@ -513,9 +464,8 @@ var CalendarHeader = /*#__PURE__*/function (_HTMLElement) {
     _classCallCheck(this, CalendarHeader);
 
     _this = _super.call(this);
-    _this.data = {
-      participants: _assets_data__WEBPACK_IMPORTED_MODULE_2__.participants,
-      isAdmin: _utils_cookies__WEBPACK_IMPORTED_MODULE_5__.getCookie("currentUser") ? JSON.parse(_utils_cookies__WEBPACK_IMPORTED_MODULE_5__.getCookie("currentUser")).isAdmin : "null"
+    _this.data = {// participants: Store.users ? Store.users : [],
+      // isAdmin: Cookies.getCookie("currentUser") ? JSON.parse(Cookies.getCookie("currentUser")).isAdmin : "null"
     };
     return _this;
   }
@@ -530,7 +480,7 @@ var CalendarHeader = /*#__PURE__*/function (_HTMLElement) {
       this.select = this.querySelector(".calendar-header__filter");
       this.createButton = this.querySelector(".calendar-header__button");
       this.logoutButton = this.querySelector(".calendar-header__logout");
-      this.createButton.style.display = this.data.isAdmin ? "block" : "none";
+      this.createButton.style.display = _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.isAdmin ? "block" : "none";
       this.select.insertAdjacentHTML("afterbegin", "\n      <option value=\"All members\">All members</option>\n    ");
 
       this.select.onchange = function () {
@@ -545,8 +495,14 @@ var CalendarHeader = /*#__PURE__*/function (_HTMLElement) {
         return _this2.logout();
       };
 
-      _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__.default.elementMultiplier("option", ["value"], this.select, this.data.participants.map(function (item) {
-        return item.name;
+      this.fillParticipants(this.select, _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.users);
+    }
+  }, {
+    key: "fillParticipants",
+    value: function fillParticipants(select) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+      _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__.default.elementMultiplier("option", ["value"], select, data.map(function (item) {
+        return item.data.name;
       }));
       this.select.querySelectorAll("option").forEach(function (item) {
         item.innerText = item.value;
@@ -561,12 +517,128 @@ var CalendarHeader = /*#__PURE__*/function (_HTMLElement) {
   }, {
     key: "logout",
     value: function logout() {
-      _utils_cookies__WEBPACK_IMPORTED_MODULE_5__.deleteCookie("currentUser");
+      _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.clearCurrentUser();
       (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_0__.publish)("logout");
     }
   }]);
 
   return CalendarHeader;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+
+
+/***/ }),
+
+/***/ "./components/eventFlag/eventFlag.js":
+/*!*******************************************!*\
+  !*** ./components/eventFlag/eventFlag.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ EventFlag)
+/* harmony export */ });
+/* harmony import */ var _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/ComponentsHelper */ "./utils/ComponentsHelper.js");
+/* harmony import */ var _eventFlag_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./eventFlag.html */ "./components/eventFlag/eventFlag.html");
+/* harmony import */ var _removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../removeEvent/removeEvent */ "./components/removeEvent/removeEvent.js");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
+/* harmony import */ var _eventFlag_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./eventFlag.scss */ "./components/eventFlag/eventFlag.scss");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+
+
+var EventFlag = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(EventFlag, _HTMLElement);
+
+  var _super = _createSuper(EventFlag);
+
+  function EventFlag(options) {
+    var _this;
+
+    _classCallCheck(this, EventFlag);
+
+    _this = _super.call(this);
+    _this.data = {
+      time: options.time,
+      day: options.day,
+      name: options.name,
+      id: options.id
+    };
+    _this.fields = {};
+
+    _this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_0__.default.parseElement(_eventFlag_html__WEBPACK_IMPORTED_MODULE_1__.default));
+
+    _this.classList.add('event-flag');
+
+    return _this;
+  }
+
+  _createClass(EventFlag, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      var _this2 = this;
+
+      this.fields.name = this.querySelector('.event-flag__name');
+      this.fields.button = this.querySelector('.event-flag__button');
+      this.fields.name.innerText = this.data.name;
+
+      if (_utils_store__WEBPACK_IMPORTED_MODULE_3__.default.isAdmin) {
+        this.draggable = true;
+        this.setAttribute('ondragstart', 'onDragStart(event)');
+        this.fields.button.style.display = 'block';
+
+        this.fields.button.onclick = function () {
+          return _this2.showRemoveWindow();
+        };
+      }
+    }
+  }, {
+    key: "showRemoveWindow",
+    value: function showRemoveWindow() {
+      var main = document.querySelector('#main');
+      var removeWindow = new _removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_2__.default({
+        name: this.data.name,
+        day: this.data.day,
+        time: this.data.time,
+        id: this.data.id
+      });
+      main.insertAdjacentElement('afterbegin', removeWindow);
+    }
+  }]);
+
+  return EventFlag;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
 
 
@@ -642,7 +714,7 @@ var NewEvent = /*#__PURE__*/function (_HTMLElement) {
 
     _this = _super.call(this);
     _this.data = {
-      participants: _assets_data__WEBPACK_IMPORTED_MODULE_2__.participants,
+      participants: _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.users,
       days: _assets_data__WEBPACK_IMPORTED_MODULE_2__.workingDays,
       hours: _assets_data__WEBPACK_IMPORTED_MODULE_2__.workingHours
     };
@@ -671,7 +743,9 @@ var NewEvent = /*#__PURE__*/function (_HTMLElement) {
         return _this2.closeTab();
       };
 
-      var multiSelect = new _selectComponent_selectComponent__WEBPACK_IMPORTED_MODULE_5__.default(this.data.participants);
+      var multiSelect = new _selectComponent_selectComponent__WEBPACK_IMPORTED_MODULE_5__.default(this.data.participants.map(function (item) {
+        return item.data;
+      }));
       this.participants.appendChild(multiSelect);
       multiSelect.classList.add("new-event__input");
       _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__.default.elementMultiplier("option", ["data-value"], this.days, this.data.days);
@@ -695,15 +769,13 @@ var NewEvent = /*#__PURE__*/function (_HTMLElement) {
       if (this.checkFields(object)) {
         // const cookies = Cookies.getCookie("calendar");
         // const events = cookies ? JSON.parse(cookies) : [];
-        // if (!this.checkIfExist(events, object)) {
-        // if (events && events !== "undefined") {    
-        _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.pushEvent(object);
-        _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.getEvents().then(function () {
-          console.log(_utils_store__WEBPACK_IMPORTED_MODULE_6__.default.events);
-        });
-        object = {};
-        this.closeTab();
-        _utils_eventBus__WEBPACK_IMPORTED_MODULE_1__.publish("refreshEvents"); // }
+        if (!this.checkIfExist(_utils_store__WEBPACK_IMPORTED_MODULE_6__.default.events, object)) {
+          // if (events && events !== "undefined") {    
+          _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.pushEvent(object);
+          object = {};
+          this.closeTab();
+          _utils_eventBus__WEBPACK_IMPORTED_MODULE_1__.publish("refreshEvents");
+        }
       }
     }
   }, {
@@ -711,7 +783,6 @@ var NewEvent = /*#__PURE__*/function (_HTMLElement) {
     value: function checkFields(data) {
       this.clearErrors();
       var error = 0;
-      console.log(data);
 
       if (data.name === "") {
         this.showError("Name cannot be empty.");
@@ -737,7 +808,7 @@ var NewEvent = /*#__PURE__*/function (_HTMLElement) {
       var result = false;
       data.forEach(function (item) {
         if (item) {
-          if (item.day === object.day && item.time === object.time) {
+          if (item.data.day === object.day && item.data.time === object.time) {
             result = true;
 
             _this3.showError("This time is already taken.");
@@ -1116,10 +1187,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_selectComponent_selectComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/selectComponent/selectComponent */ "./components/selectComponent/selectComponent.js");
 /* harmony import */ var _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/calendarComponent/calendarComponent */ "./components/calendarComponent/calendarComponent.js");
 /* harmony import */ var _components_removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/removeEvent/removeEvent */ "./components/removeEvent/removeEvent.js");
-/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/eventBus */ "./utils/eventBus.js");
-/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/cookies */ "./utils/cookies.js");
-/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../styles/main.scss */ "./styles/main.scss");
+/* harmony import */ var _components_eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/eventFlag/eventFlag */ "./components/eventFlag/eventFlag.js");
+/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/eventBus */ "./utils/eventBus.js");
+/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/cookies */ "./utils/cookies.js");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/store */ "./utils/store.js");
+/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../styles/main.scss */ "./styles/main.scss");
+
+
 
 
 
@@ -1136,20 +1211,26 @@ customElements.define('new-event', _components_newEvent_newEvent_js__WEBPACK_IMP
 customElements.define('select-multiply', _components_selectComponent_selectComponent__WEBPACK_IMPORTED_MODULE_3__.default);
 customElements.define('calendar-component', _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__.default);
 customElements.define('remove-event', _components_removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_5__.default);
-(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_6__.subscribe)("logout", function () {
+customElements.define('event-flag', _components_eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_6__.default);
+_utils_store__WEBPACK_IMPORTED_MODULE_9__.default.getUsers().then(function () {
+  _utils_store__WEBPACK_IMPORTED_MODULE_9__.default.getEvents().then(function () {
+    render();
+  });
+});
+(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_7__.subscribe)("logout", function () {
   render();
 });
-(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_6__.subscribe)("login", function () {
+(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_7__.subscribe)("login", function () {
   render();
 });
-render();
 
 function render() {
-  var currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_7__.getCookie("currentUser");
+  var currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_8__.getCookie("currentUser");
 
   if (!currentUser) {
     main.innerHTML = new _components_authComponent_authComponent_js__WEBPACK_IMPORTED_MODULE_2__.default().outerHTML;
   } else {
+    _utils_store__WEBPACK_IMPORTED_MODULE_9__.default.getCurrentUser();
     main.innerHTML = new _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__.default().outerHTML;
     main.appendChild(new _components_calendarHeader_calendarHeader_js__WEBPACK_IMPORTED_MODULE_0__.default());
   }
@@ -1231,7 +1312,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var eventsApi = new ( /*#__PURE__*/function (_API) {
+
+var EventsAPI = /*#__PURE__*/function (_API) {
   _inherits(EventsAPI, _API);
 
   var _super = _createSuper(EventsAPI);
@@ -1380,8 +1462,9 @@ var eventsApi = new ( /*#__PURE__*/function (_API) {
   }]);
 
   return EventsAPI;
-}(_index__WEBPACK_IMPORTED_MODULE_0__.default))();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (eventsApi);
+}(_index__WEBPACK_IMPORTED_MODULE_0__.default);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new EventsAPI());
 
 /***/ }),
 
@@ -1394,7 +1477,7 @@ var eventsApi = new ( /*#__PURE__*/function (_API) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ServerApi)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -1496,7 +1579,207 @@ var ServerApi = /*#__PURE__*/function () {
   return ServerApi;
 }();
 
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ServerApi);
 
+/***/ }),
+
+/***/ "./utils/api/users.js":
+/*!****************************!*\
+  !*** ./utils/api/users.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index */ "./utils/api/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var UsersApi = /*#__PURE__*/function (_ServerApi) {
+  _inherits(UsersApi, _ServerApi);
+
+  var _super = _createSuper(UsersApi);
+
+  function UsersApi() {
+    var _this;
+
+    _classCallCheck(this, UsersApi);
+
+    _this = _super.call(this);
+    _this.entity = "users";
+    return _this;
+  }
+
+  _createClass(UsersApi, [{
+    key: "get",
+    value: function () {
+      var _get2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var response, data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _get(_getPrototypeOf(UsersApi.prototype), "get", this).call(this, this.entity);
+
+              case 2:
+                response = _context.sent;
+                _context.next = 5;
+                return response.json();
+
+              case 5:
+                data = _context.sent;
+                console.log(data);
+
+                if (!data) {
+                  _context.next = 12;
+                  break;
+                }
+
+                data.forEach(function (item) {
+                  item.data = item.data ? JSON.parse(item.data) : "";
+                });
+                return _context.abrupt("return", data);
+
+              case 12:
+                return _context.abrupt("return", []);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function get() {
+        return _get2.apply(this, arguments);
+      }
+
+      return get;
+    }()
+  }, {
+    key: "post",
+    value: function () {
+      var _post = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(data) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _get(_getPrototypeOf(UsersApi.prototype), "post", this).call(this, this.entity, data);
+
+              case 2:
+                return _context2.abrupt("return", _context2.sent);
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function post(_x) {
+        return _post.apply(this, arguments);
+      }
+
+      return post;
+    }()
+  }, {
+    key: "delete",
+    value: function () {
+      var _delete2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(id) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _get(_getPrototypeOf(UsersApi.prototype), "delete", this).call(this, this.entity, id);
+
+              case 2:
+                return _context3.abrupt("return", _context3.sent);
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function _delete(_x2) {
+        return _delete2.apply(this, arguments);
+      }
+
+      return _delete;
+    }()
+  }, {
+    key: "put",
+    value: function () {
+      var _put = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(id, data) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _get(_getPrototypeOf(UsersApi.prototype), "put", this).call(this, this.entity, id, data);
+
+              case 2:
+                return _context4.abrupt("return", _context4.sent);
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function put(_x3, _x4) {
+        return _put.apply(this, arguments);
+      }
+
+      return put;
+    }()
+  }]);
+
+  return UsersApi;
+}(_index__WEBPACK_IMPORTED_MODULE_0__.default);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new UsersApi());
 
 /***/ }),
 
@@ -1558,17 +1841,15 @@ function onDrop(event) {
 
 function putElement(element, dropzone) {
   var drop = {};
-  var events = _store__WEBPACK_IMPORTED_MODULE_0__.default.events; // element.day = element.dataset.day;
-  // element.time = element.dataset.time;
-
+  var events = _store__WEBPACK_IMPORTED_MODULE_0__.default.events;
   drop.day = dropzone.dataset.day;
   drop.time = dropzone.dataset.time;
 
   if (dropzoneCheck(events, dropzone)) {
     dropzone.appendChild(element);
-    element.dataset.day = drop.day;
-    element.dataset.time = drop.time;
-    _store__WEBPACK_IMPORTED_MODULE_0__.default.updatePosition(element.dataset.id, drop);
+    element.data.day = drop.day;
+    element.data.time = drop.time;
+    _store__WEBPACK_IMPORTED_MODULE_0__.default.updatePosition(element.data.id, drop);
   }
 }
 
@@ -1749,8 +2030,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api/events */ "./utils/api/events.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./eventBus */ "./utils/eventBus.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _api_users__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api/users */ "./utils/api/users.js");
+/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/cookies */ "./utils/cookies.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./eventBus */ "./utils/eventBus.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_3__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1763,14 +2046,32 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var store = new ( /*#__PURE__*/function () {
+
+
+
+var Store = /*#__PURE__*/function () {
   function Store() {
     _classCallCheck(this, Store);
 
-    this.state = {};
+    this.state = {
+      currentUser: {} // isAdmin: Cookies.getCookie("currentUser") ? JSON.parse(Cookies.getCookie("currentUser")).isAdmin : 'false'
+
+    };
+    this.getCurrentUser();
   }
 
   _createClass(Store, [{
+    key: "getCurrentUser",
+    value: function getCurrentUser() {
+      this.state.currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser") ? JSON.parse(_utils_cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser")) : {};
+    }
+  }, {
+    key: "clearCurrentUser",
+    value: function clearCurrentUser() {
+      _utils_cookies__WEBPACK_IMPORTED_MODULE_2__.deleteCookie("currentUser");
+      this.state.isAdmin = false;
+    }
+  }, {
     key: "getEvents",
     value: function () {
       var _getEvents = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -1808,7 +2109,7 @@ var store = new ( /*#__PURE__*/function () {
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
         _this.state.events.push(data);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_1__.publish)("refreshEvents");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
       });
     }
   }, {
@@ -1827,7 +2128,7 @@ var store = new ( /*#__PURE__*/function () {
 
         _this2.state.events.splice(target, target);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_1__.publish)("refreshEvents");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
       });
     }
   }, {
@@ -1844,6 +2145,49 @@ var store = new ( /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "getUsers",
+    value: function () {
+      var _getUsers = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var response;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _api_users__WEBPACK_IMPORTED_MODULE_1__.default.get();
+
+              case 2:
+                response = _context2.sent;
+                this.state.users = response;
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getUsers() {
+        return _getUsers.apply(this, arguments);
+      }
+
+      return getUsers;
+    }()
+  }, {
+    key: "pushUser",
+    value: function pushUser(data) {
+      var _this3 = this;
+
+      _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
+        _this3.state.users.push(data);
+
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshUsers");
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }, {
     key: "events",
     get: function get() {
       if (this.state.events) {
@@ -1852,11 +2196,30 @@ var store = new ( /*#__PURE__*/function () {
         return new Error("No events in store");
       }
     }
+  }, {
+    key: "users",
+    get: function get() {
+      if (this.state.users) {
+        return this.state.users;
+      } else {
+        return new Error("No users in store");
+      }
+    }
+  }, {
+    key: "isAdmin",
+    get: function get() {
+      if (this.state.currentUser) {
+        return this.state.currentUser.isAdmin;
+      } else {
+        return new Error("No info in store");
+      }
+    }
   }]);
 
   return Store;
-}())();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Store());
 
 /***/ }),
 
@@ -12629,7 +12992,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".calendar {\n  width: 80%;\n}\n@media (max-width: 800px) {\n  .calendar {\n    width: 100%;\n  }\n}\n.calendar table {\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-collapse: collapse;\n  width: 100%;\n  margin: auto;\n  height: 90vmin;\n  table-layout: fixed;\n  background-color: #b0dfc9;\n  border-radius: 30px;\n  border: 4px solid white;\n  overflow: hidden;\n}\n.calendar table .table-header th:first-child {\n  width: 4em;\n}\n.calendar table tr:first-child {\n  height: 2em !important;\n}\n.calendar table td {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  height: 10%;\n  padding: 0;\n  margin: 0;\n  font-size: 12px !important;\n}\n.calendar table td .event-flag {\n  color: #000;\n  background-color: rgba(162, 207, 170, 0.6);\n  cursor: move;\n  cursor: grab;\n  cursor: -webkit-grab;\n  height: 100%;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n  -ms-flex-pack: justify;\n  justify-content: space-between;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  padding: 10px;\n}\n@media (max-width: 800px) {\n  .calendar table td .event-flag {\n    padding: 5px;\n  }\n}\n.calendar table td .event-flag:hover {\n  background-color: #9ad4ae;\n}\n.calendar table td .event-flag__name {\n  word-wrap: break-word;\n  width: 90%;\n}\n.calendar table td .event-flag:active {\n  cursor: grabbing;\n  cursor: -webkit-grabbing;\n}\n.calendar table td .event-flag__button {\n  background: none;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  transition: ease 0.1s;\n}\n.calendar table td .event-flag__button:hover {\n  font-weight: bolder;\n  font-size: 18px;\n}\n@media (max-width: 800px) {\n  .calendar table td .event-flag__button {\n    font-size: 10px;\n    margin: 0px;\n    padding: 0px;\n    padding-left: 2px;\n  }\n}\n.calendar table td, .calendar table th {\n  border: 2px solid rgba(166, 211, 190, 0.5);\n  font-size: 14px;\n}\n@media (max-width: 700px) {\n  .calendar table td, .calendar table th {\n    font-size: 12px;\n  }\n}\n@media (max-width: 400px) {\n  .calendar table td, .calendar table th {\n    font-size: 10px;\n  }\n}\n.calendar table th {\n  font-weight: bold;\n  font-family: \"Lora\", serif;\n  box-sizing: border-box;\n  height: 50px;\n}\n@media (max-width: 1100px) {\n  .calendar table th {\n    font-size: 12px;\n  }\n}\n@media (max-width: 400px) {\n  .calendar table th {\n    font-size: 10px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/calendarComponent/calendarComponent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,UAAA;AAAF;AACE;EAFF;IAGI,WAAA;EAEF;AACF;AADA;EACE,sDCKQ;EDJR,8DCIQ;EDHR,yBAAA;EACA,WAAA;EACA,YAAA;EACA,cAAA;EACA,mBAAA;EACA,yBCTU;EDUV,mBCGQ;EDFR,uBAAA;EACA,gBAAA;AAGF;AADE;EACE,UAAA;AAGJ;AACI;EACE,sBAAA;AACN;AAGE;EACE,8BAAA;EACQ,sBAAA;EACR,WAAA;EACA,UAAA;EACA,SAAA;EACA,0BAAA;AADJ;AAGI;EACE,WAAA;EACA,0CAAA;EACA,YAAA;EACA,YAAA;EACA,oBAAA;EAEA,YAAA;EACA,WAAA;EACA,8BAAA;EACQ,sBAAA;EACR,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,yBAAA;EACI,sBAAA;EACI,8BAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,aAAA;AAFN;AAIM;EAtBF;IAuBI,YAAA;EADN;AACF;AAGM;EACE,yBAAA;AADR;AAIM;EACE,qBAAA;EACA,UAAA;AAFR;AAKM;EACE,gBAAA;EACA,wBAAA;AAHR;AAMM;EACE,gBAAA;EACA,YAAA;EACA,aAAA;EACA,eAAA;EACA,qBAAA;AAJR;AAKQ;EACE,mBAAA;EACA,eAAA;AAHV;AAKQ;EAVF;IAWI,eAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EAFR;AACF;AAOE;EACE,0CAAA;EACA,eAAA;AALJ;AAMI;EAHF;IAII,eAAA;EAHJ;AACF;AAII;EANF;IAOI,eAAA;EADJ;AACF;AAIE;EACE,iBAAA;EACA,0BCrGI;EDsGJ,sBAAA;EACA,YAAA;AAFJ;AAGI;EALF;IAMI,eAAA;EAAJ;AACF;AACI;EARF;IASI,eAAA;EAEJ;AACF","sourcesContent":["@import '/styles/variables.scss';\r\n\r\n.calendar {\r\n  width: 80%;\r\n  @media (max-width: 800px) {\r\n    width: 100%;\r\n  }\r\ntable {\r\n  box-shadow: $shadow1;\r\n  -webkit-box-shadow:  $shadow1;\r\n  border-collapse: collapse;\r\n  width: 100%;\r\n  margin: auto;\r\n  height: 90vmin;\r\n  table-layout: fixed;\r\n  background-color: $colorMain;\r\n  border-radius: $border1;\r\n  border: 4px solid white;\r\n  overflow: hidden;\r\n\r\n  .table-header th:first-child{\r\n    width: 4em;\r\n  }\r\n\r\n  tr {\r\n    &:first-child {\r\n      height: 2em!important;\r\n    }\r\n  }\r\n\r\n  td {\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    height: 10%;\r\n    padding: 0;\r\n    margin: 0;\r\n    font-size: 12px!important;\r\n  \r\n    .event-flag {\r\n      color: #000;\r\n      background-color: rgba(162, 207, 170, 0.6);\r\n      cursor: move;\r\n      cursor: grab;\r\n      cursor: -webkit-grab;\r\n  \r\n      height: 100%;\r\n      width: 100%;\r\n      -webkit-box-sizing: border-box;\r\n              box-sizing: border-box;\r\n      display:-webkit-box;\r\n      display:-ms-flexbox;\r\n      display:flex;\r\n      -webkit-box-pack: justify;\r\n          -ms-flex-pack: justify;\r\n              justify-content: space-between;\r\n      -webkit-box-align: center;\r\n          -ms-flex-align: center;\r\n              align-items: center;\r\n      padding: 10px;\r\n\r\n      @media (max-width: 800px) {\r\n        padding: 5px;\r\n      }\r\n\r\n      &:hover {\r\n        background-color: #9ad4ae;\r\n      }\r\n  \r\n      &__name {\r\n        word-wrap: break-word;\r\n        width: 90%;\r\n      }\r\n  \r\n      &:active {\r\n        cursor: grabbing;\r\n        cursor: -webkit-grabbing;\r\n      }\r\n  \r\n      &__button {\r\n        background: none;\r\n        border: none;\r\n        outline: none;\r\n        cursor: pointer;\r\n        transition: ease 0.1s;\r\n        &:hover {\r\n          font-weight: bolder;\r\n          font-size: 18px;\r\n        }\r\n        @media (max-width:800px) {\r\n          font-size: 10px;\r\n          margin: 0px;\r\n          padding: 0px;\r\n          padding-left: 2px;\r\n        }\r\n      }\r\n    }\r\n  }\r\n\r\n  td, th {\r\n    border: 2px solid rgba(166, 211, 190, 0.5);\r\n    font-size: 14px;\r\n    @media (max-width: 700px) {\r\n      font-size: 12px;\r\n    }\r\n    @media (max-width: 400px) {\r\n      font-size: 10px;\r\n    }\r\n  }\r\n\r\n  th {\r\n    font-weight: bold;\r\n    font-family: $font1;\r\n    box-sizing: border-box;\r\n    height: 50px;\r\n    @media (max-width: 1100px) {\r\n      font-size: 12px;\r\n    }\r\n    @media (max-width: 400px) {\r\n      font-size: 10px;\r\n    }\r\n  }\r\n}\r\n}\r\n\r\n","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".calendar {\n  width: 80%;\n}\n@media (max-width: 800px) {\n  .calendar {\n    width: 100%;\n  }\n}\n.calendar table {\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-collapse: collapse;\n  width: 100%;\n  margin: auto;\n  height: 90vmin;\n  table-layout: fixed;\n  background-color: #b0dfc9;\n  border-radius: 30px;\n  border: 4px solid white;\n  overflow: hidden;\n}\n.calendar table .table-header th:first-child {\n  width: 4em;\n}\n.calendar table tr:first-child {\n  height: 2em !important;\n}\n.calendar table td {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  height: 10%;\n  padding: 0;\n  margin: 0;\n  font-size: 12px !important;\n}\n.calendar table td, .calendar table th {\n  border: 2px solid rgba(166, 211, 190, 0.5);\n  font-size: 14px;\n}\n@media (max-width: 700px) {\n  .calendar table td, .calendar table th {\n    font-size: 12px;\n  }\n}\n@media (max-width: 400px) {\n  .calendar table td, .calendar table th {\n    font-size: 8px;\n  }\n}\n.calendar table th {\n  font-weight: bold;\n  font-family: \"Lora\", serif;\n  box-sizing: border-box;\n  height: 50px;\n}\n@media (max-width: 1100px) {\n  .calendar table th {\n    font-size: 12px;\n  }\n}\n@media (max-width: 400px) {\n  .calendar table th {\n    font-size: 10px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/calendarComponent/calendarComponent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,UAAA;AAAF;AACE;EAFF;IAGI,WAAA;EAEF;AACF;AADA;EACE,sDCKQ;EDJR,8DCIQ;EDHR,yBAAA;EACA,WAAA;EACA,YAAA;EACA,cAAA;EACA,mBAAA;EACA,yBCTU;EDUV,mBCGQ;EDFR,uBAAA;EACA,gBAAA;AAGF;AADE;EACE,UAAA;AAGJ;AACI;EACE,sBAAA;AACN;AAGE;EACE,8BAAA;EACQ,sBAAA;EACR,WAAA;EACA,UAAA;EACA,SAAA;EACA,0BAAA;AADJ;AAIE;EACE,0CAAA;EACA,eAAA;AAFJ;AAGI;EAHF;IAII,eAAA;EAAJ;AACF;AACI;EANF;IAOI,cAAA;EAEJ;AACF;AACE;EACE,iBAAA;EACA,0BC1CI;ED2CJ,sBAAA;EACA,YAAA;AACJ;AAAI;EALF;IAMI,eAAA;EAGJ;AACF;AAFI;EARF;IASI,eAAA;EAKJ;AACF","sourcesContent":["@import '/styles/variables.scss';\r\n\r\n.calendar {\r\n  width: 80%;\r\n  @media (max-width: 800px) {\r\n    width: 100%;\r\n  }\r\ntable {\r\n  box-shadow: $shadow1;\r\n  -webkit-box-shadow:  $shadow1;\r\n  border-collapse: collapse;\r\n  width: 100%;\r\n  margin: auto;\r\n  height: 90vmin;\r\n  table-layout: fixed;\r\n  background-color: $colorMain;\r\n  border-radius: $border1;\r\n  border: 4px solid white;\r\n  overflow: hidden;\r\n\r\n  .table-header th:first-child{\r\n    width: 4em;\r\n  }\r\n\r\n  tr {\r\n    &:first-child {\r\n      height: 2em!important;\r\n    }\r\n  }\r\n\r\n  td {\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    height: 10%;\r\n    padding: 0;\r\n    margin: 0;\r\n    font-size: 12px!important;\r\n  }\r\n\r\n  td, th {\r\n    border: 2px solid rgba(166, 211, 190, 0.5);\r\n    font-size: 14px;\r\n    @media (max-width: 700px) {\r\n      font-size: 12px;\r\n    }\r\n    @media (max-width: 400px) {\r\n      font-size: 8px;\r\n    }\r\n  }\r\n\r\n  th {\r\n    font-weight: bold;\r\n    font-family: $font1;\r\n    box-sizing: border-box;\r\n    height: 50px;\r\n    @media (max-width: 1100px) {\r\n      font-size: 12px;\r\n    }\r\n    @media (max-width: 400px) {\r\n      font-size: 10px;\r\n    }\r\n  }\r\n}\r\n}\r\n\r\n","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12658,6 +13021,34 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.calendar-header {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  flex-direction: column;\n  -webkit-box-align: start;\n  -ms-flex-align: start;\n  align-items: start;\n  margin-left: 60px;\n  width: 20%;\n  max-width: 300px;\n  height: 100%;\n}\n@media (max-width: 800px) {\n  .calendar-header {\n    flex-direction: row;\n    margin-left: 0;\n    width: 100%;\n    max-width: none;\n    justify-content: space-between;\n    align-items: center;\n    align-content: center;\n    height: 5vh;\n    margin-top: 20px;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header {\n    flex-direction: column;\n    align-items: flex-start;\n  }\n}\n.calendar-header__header {\n  font-size: 20px;\n  font-family: \"Lora\", serif;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  padding: 5px;\n  border-radius: 5px;\n  width: 100%;\n  box-sizing: border-box;\n  margin-bottom: 10px;\n  line-height: 1.5em;\n}\n@media (max-width: 800px) {\n  .calendar-header__header {\n    height: 100%;\n    margin: 0;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header__header {\n    font-size: 17px;\n    margin-bottom: 10px;\n  }\n}\n.calendar-header__options {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n  justify-content: flex-start;\n}\n@media (max-width: 800px) {\n  .calendar-header__options {\n    flex-direction: row;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    margin-left: 10px;\n    justify-content: space-between;\n    align-items: center;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header__options {\n    margin-left: 0;\n    width: 100%;\n  }\n}\n.calendar-header__filter {\n  font-size: 12px;\n  border-radius: 5px;\n  padding: 1em;\n  outline: none;\n  max-width: 30vw;\n  background-color: #b0dfc9;\n  border: none;\n  border-radius: 5px;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  margin-bottom: 10px;\n  width: 100%;\n  min-width: 150px;\n}\n.calendar-header__filter:hover {\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.calendar-header__filter:active {\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}\n@media (max-width: 800px) {\n  .calendar-header__filter {\n    margin: 0px;\n    margin-right: 10px;\n    min-width: none;\n    max-width: none;\n    width: 50%;\n    box-sizing: border-box;\n    font-size: 10px;\n    height: 100%;\n  }\n}\n.calendar-header__button {\n  width: 100%;\n  min-width: 150px;\n  background-color: #b0dfc9;\n  font-size: 25px;\n  font-weight: bold;\n  font-family: \"Lora\", serif;\n  cursor: pointer;\n  background-color: inherit;\n  border: none;\n  border-radius: 30px;\n  padding: 10px 30px 10px 30px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  outline: none;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n@media (max-width: 600px) {\n  .calendar-header__button {\n    font-size: 10px;\n    height: 100%;\n  }\n}\n@media (max-width: 800px) {\n  .calendar-header__button {\n    min-width: none;\n    width: 50%;\n    height: 100%;\n    font-size: 11px;\n  }\n}\n.calendar-header__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.calendar-header__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}\n.calendar-header__logout {\n  font-family: \"Roboto\", sans-serif;\n  margin-top: 20px;\n  cursor: pointer;\n  text-align: center;\n  font-size: 16px;\n  color: #000;\n  font-weight: bold;\n}\n.calendar-header__logout:hover {\n  color: #B9CBC3;\n}", "",{"version":3,"sources":["webpack://./components/calendarHeader/calendarHeader.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,sBAAA;EACA,wBAAA;EACI,qBAAA;EACI,kBAAA;EACR,iBAAA;EACA,UAAA;EACA,gBAAA;EACA,YAAA;AADF;AAGE;EAbF;IAcI,mBAAA;IACA,cAAA;IACA,WAAA;IACA,eAAA;IACA,8BAAA;IACA,mBAAA;IACA,qBAAA;IACA,WAAA;IACA,gBAAA;EAAF;AACF;AAEE;EAzBF;IA0BI,sBAAA;IACA,uBAAA;EACF;AACF;AACE;EACE,eAAA;EACA,0BC/BI;EDgCJ,sDC7BM;ED8BN,8DC9BM;ED+BN,YAAA;EACA,kBAAA;EACA,WAAA;EACA,sBAAA;EACA,mBAAA;EACA,kBAAA;AACJ;AACI;EAZF;IAaI,YAAA;IACA,SAAA;EAEJ;AACF;AAAI;EAjBF;IAkBI,eAAA;IACA,mBAAA;EAGJ;AACF;AAAE;EACE,aAAA;EACA,sBAAA;EACA,WAAA;EACA,YAAA;EACA,2BAAA;AAEJ;AAAI;EAPF;IAQI,mBAAA;IACA,WAAA;IACA,YAAA;IACA,SAAA;IACA,iBAAA;IACA,8BAAA;IACA,mBAAA;EAGJ;AACF;AAFI;EAhBF;IAiBI,cAAA;IACA,WAAA;EAKJ;AACF;AAFE;EACE,eAAA;EACA,kBAAA;EACA,YAAA;EAEA,aAAA;EACA,eAAA;EACA,yBCrFQ;EDsFR,YAAA;EACA,kBAAA;EACA,sDCjFM;EDkFN,8DClFM;EDmFN,mBAAA;EACA,WAAA;EACA,gBAAA;AAGJ;AADI;EACE,sDCvFI;EDwFJ,8DCxFI;AD2FV;AADI;EACE,qCC1FI;AD6FV;AAAI;EAxBF;IAyBI,WAAA;IACA,kBAAA;IACA,eAAA;IACA,eAAA;IACA,UAAA;IACA,sBAAA;IACA,eAAA;IACA,YAAA;EAGJ;AACF;AAAE;EACE,WAAA;EACA,gBAAA;EACA,yBCrHQ;EDsHR,eAAA;EACA,iBAAA;EACA,0BCpHI;EDgIJ,eAAA;EACA,yBAAA;EACA,YAAA;EACA,mBC1HM;ED2HN,4BAAA;EACA,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DCxIM;EDyIE,sDCzIF;ADgIV;AAdI;EAPF;IAQI,eAAA;IACA,YAAA;EAiBJ;AACF;AAhBI;EAXF;IAYI,eAAA;IACA,UAAA;IACA,YAAA;IAEA,eAAA;EAkBJ;AACF;AAJI;EACE,8DC1II;ED2II,sDC3IJ;ADiJV;AAJI;EACE,6CC7II;ED8II,qCC9IJ;ADoJV;AAFE;EACE,iCCvJI;EDwJJ,gBAAA;EACA,eAAA;EACA,kBAAA;EACA,eAAA;EACA,WAAA;EACA,iBAAA;AAIJ;AAFI;EACE,cCzKG;AD6KT","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.calendar-header {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  flex-direction: column;\r\n  -webkit-box-align:start;\r\n      -ms-flex-align:start;\r\n          align-items:start;\r\n  margin-left: 60px;\r\n  width: 20%;\r\n  max-width: 300px;\r\n  height: 100%;\r\n\r\n  @media (max-width: 800px) {\r\n    flex-direction: row;\r\n    margin-left: 0;\r\n    width: 100%;\r\n    max-width: none;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    align-content: center;\r\n    height: 5vh;\r\n    margin-top: 20px;\r\n  }\r\n\r\n  @media (max-width: 600px) {\r\n    flex-direction: column;\r\n    align-items: flex-start;\r\n  }\r\n\r\n  &__header {\r\n    font-size: 20px;\r\n    font-family: $font1;\r\n    box-shadow: $shadow1;\r\n    -webkit-box-shadow: $shadow1;\r\n    padding: 5px;\r\n    border-radius: 5px;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 10px;\r\n    line-height: 1.5em;\r\n\r\n    @media (max-width: 800px) {\r\n      height: 100%;\r\n      margin: 0;\r\n    }\r\n\r\n    @media (max-width: 600px) {\r\n      font-size: 17px;\r\n      margin-bottom: 10px;\r\n    }\r\n  }\r\n\r\n  &__options {\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: 100%;\r\n    height: 100%;\r\n    justify-content: flex-start;\r\n\r\n    @media (max-width: 800px) {\r\n      flex-direction: row;\r\n      width: 100%;\r\n      height: 100%;\r\n      margin: 0;\r\n      margin-left: 10px;\r\n      justify-content: space-between;\r\n      align-items: center;\r\n    }\r\n    @media (max-width: 600px) {\r\n      margin-left: 0;\r\n      width: 100%;\r\n    }\r\n  } \r\n\r\n  &__filter {\r\n    font-size: 12px;\r\n    border-radius: 5px;\r\n    padding: 1em;\r\n\r\n    outline: none;\r\n    max-width: 30vw;\r\n    background-color: $colorMain;\r\n    border: none;\r\n    border-radius: 5px;\r\n    box-shadow: $shadow1;\r\n    -webkit-box-shadow:  $shadow1;\r\n    margin-bottom: 10px;\r\n    width: 100%; \r\n    min-width: 150px;\r\n    \r\n    &:hover {\r\n      box-shadow: $shadow2;\r\n      -webkit-box-shadow:  $shadow2;\r\n    }\r\n    &:active {\r\n      box-shadow: $shadow3;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n      margin: 0px;\r\n      margin-right: 10px;\r\n      min-width: none;\r\n      max-width: none;\r\n      width: 50%;\r\n      box-sizing: border-box;\r\n      font-size: 10px;\r\n      height: 100%;\r\n    }\r\n  }\r\n\r\n  &__button {\r\n    width: 100%;\r\n    min-width: 150px;\r\n    background-color: $colorMain;\r\n    font-size: 25px;\r\n    font-weight: bold;\r\n    font-family: $font1;\r\n    @media (max-width: 600px) {\r\n      font-size: 10px;\r\n      height: 100%;\r\n    }\r\n    @media (max-width: 800px) {\r\n      min-width: none;\r\n      width: 50%;\r\n      height: 100%;\r\n\r\n      font-size: 11px;\r\n    }\r\n    cursor: pointer;\r\n    background-color: inherit;\r\n    border: none;\r\n    border-radius: $border1;\r\n    padding: 10px 30px 10px 30px;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    outline: none;\r\n    -webkit-transition: ease 0.1s;\r\n    -o-transition: ease 0.1s;\r\n    transition: ease 0.1s;\r\n    -webkit-box-shadow: $shadow1;\r\n            box-shadow: $shadow1;\r\n    &:hover {\r\n      -webkit-box-shadow: $shadow2;\r\n              box-shadow: $shadow2;\r\n    }\r\n    &:active {\r\n      -webkit-box-shadow: $shadow3;\r\n              box-shadow: $shadow3;\r\n    }\r\n  }\r\n\r\n  &__logout {\r\n    font-family: $font2;\r\n    margin-top: 20px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    font-size: 16px;\r\n    color: #000;\r\n    font-weight: bold;\r\n\r\n    &:hover {\r\n      color: $color1;\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/eventFlag/eventFlag.scss":
+/*!**************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/eventFlag/eventFlag.scss ***!
+  \**************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".event-flag {\n  color: #000;\n  background-color: #a8dac2;\n  cursor: move;\n  cursor: grab;\n  cursor: -webkit-grab;\n  height: 100%;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  flex-direction: column;\n  -webkit-box-pack: start;\n  -ms-flex-pack: start;\n  justify-content: flex-start;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n}\n@media (max-width: 800px) {\n  .event-flag {\n    padding: 5px;\n  }\n}\n.event-flag:hover {\n  background-color: #9ad4ae;\n}\n.event-flag__name {\n  word-wrap: break-word;\n  box-sizing: border-box;\n  height: 100%;\n  margin: 2%;\n}\n.event-flag:active {\n  cursor: grabbing;\n  cursor: -webkit-grabbing;\n}\n.event-flag__button {\n  display: none;\n  align-self: flex-end;\n  margin: 0;\n  background-color: #da0808;\n  color: #B9CBC3;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  transition: ease 0.1s;\n  font-size: 10px;\n  width: 10%;\n  padding: 0;\n  min-width: 2em;\n}\n.event-flag__button:hover {\n  font-weight: bolder;\n  width: 100%;\n}\n@media (max-width: 800px) {\n  .event-flag__button {\n    font-size: 10px;\n    margin: 0px;\n    padding: 0px;\n    padding-left: 2px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/eventFlag/eventFlag.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,WAAA;EACA,yBAAA;EACA,YAAA;EACA,YAAA;EACA,oBAAA;EAEA,YAAA;EACA,WAAA;EACA,8BAAA;EACQ,sBAAA;EACR,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACI,oBAAA;EACI,2BAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;AADV;AAIE;EAvBF;IAwBI,YAAA;EADF;AACF;AAGE;EACE,yBAAA;AADJ;AAIE;EACE,qBAAA;EACA,sBAAA;EACA,YAAA;EACA,UAAA;AAFJ;AAKE;EACE,gBAAA;EACA,wBAAA;AAHJ;AAME;EACE,aAAA;EACA,oBAAA;EACA,SAAA;EACA,yBAAA;EACA,cChDK;EDiDL,YAAA;EACA,aAAA;EACA,eAAA;EACA,qBAAA;EACA,eAAA;EACA,UAAA;EACA,UAAA;EACA,cAAA;AAJJ;AAKI;EACE,mBAAA;EACA,WAAA;AAHN;AAMI;EAnBF;IAoBI,eAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EAHJ;AACF","sourcesContent":["@import \"../../styles/variables.scss\";\r\n\r\n.event-flag {\r\n  color: #000;\r\n  background-color: #a8dac2;\r\n  cursor: move;\r\n  cursor: grab;\r\n  cursor: -webkit-grab;\r\n\r\n  height: 100%;\r\n  width: 100%;\r\n  -webkit-box-sizing: border-box;\r\n          box-sizing: border-box;\r\n  display:-webkit-box;\r\n  display:-ms-flexbox;\r\n  display:flex;\r\n  flex-direction: column;\r\n  -webkit-box-pack: start;\r\n      -ms-flex-pack: start;\r\n          justify-content: flex-start;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n          // transition: ease 0.5s;\r\n\r\n  @media (max-width: 800px) {\r\n    padding: 5px;\r\n  }\r\n\r\n  &:hover {\r\n    background-color: #9ad4ae;\r\n  }\r\n\r\n  &__name {\r\n    word-wrap: break-word;\r\n    box-sizing: border-box;\r\n    height: 100%;\r\n    margin: 2%;\r\n  }\r\n\r\n  &:active {\r\n    cursor: grabbing;\r\n    cursor: -webkit-grabbing;\r\n  }\r\n\r\n  &__button {\r\n    display: none;\r\n    align-self: flex-end;\r\n    margin: 0;\r\n    background-color: rgb(218, 8, 8);\r\n    color: $color1;\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    transition: ease 0.1s;\r\n    font-size: 10px;\r\n    width: 10%;\r\n    padding: 0;\r\n    min-width: 2em;\r\n    &:hover {\r\n      font-weight: bolder;\r\n      width: 100%;\r\n    }\r\n\r\n    @media (max-width:800px) {\r\n      font-size: 10px;\r\n      margin: 0px;\r\n      padding: 0px;\r\n      padding-left: 2px;\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12713,7 +13104,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.remove-event-wrapper {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  position: absolute;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #b0dfc9;\n}\n.remove-event-wrapper .remove-event {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  max-width: 500px;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 20px;\n  background-color: #b0dfc9;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-radius: 5px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: space-between;\n  -ms-flex-align: space-between;\n  align-items: space-between;\n}\n.remove-event-wrapper .remove-event__title {\n  word-wrap: break-word;\n}\n.remove-event-wrapper .remove-event__buttons {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n  -ms-flex-pack: end;\n  justify-content: flex-end;\n  width: 100%;\n}\n.remove-event-wrapper .remove-event__button {\n  border-radius: 5px;\n  border: none;\n  outline: none;\n  background-color: #b0dfc9;\n  margin-bottom: 10px;\n  width: 30%;\n  height: 30px;\n  margin-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n.remove-event-wrapper .remove-event__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.remove-event-wrapper .remove-event__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}", "",{"version":3,"sources":["webpack://./components/removeEvent/removeEvent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,0BAAA;EACI,qBAAA;EACJ,OAAA;EACA,MAAA;EACA,WAAA;EACA,YAAA;EACA,yBCxBQ;ADuBZ;AAGI;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,gBAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,yBCtCI;EDuCJ,8DChCE;EDiCM,sDCjCN;EDkCF,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,gCAAA;EACI,6BAAA;EACI,0BAAA;AADhB;AAGQ;EACI,qBAAA;AADZ;AAIQ;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,qBAAA;EACI,kBAAA;EACI,yBAAA;EACR,WAAA;AAFZ;AAKQ;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,yBCnEA;EDoEA,mBAAA;EACA,UAAA;EACA,YAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DCvEF;EDwEU,sDCxEV;ADqEV;AAIY;EACE,8DCzEJ;ED0EY,sDC1EZ;ADwEV;AAIY;EACE,6CC5EJ;ED6EY,qCC7EZ;AD2EV","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.remove-event-wrapper {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    position: absolute;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: $colorMain;\r\n\r\n    .remove-event {\r\n        display: -webkit-box;\r\n        display: -ms-flexbox;\r\n        display: flex;\r\n        max-width: 500px;\r\n        -webkit-box-orient: vertical;\r\n        -webkit-box-direction: normal;\r\n            -ms-flex-direction: column;\r\n                flex-direction: column;\r\n        -webkit-box-sizing: border-box;\r\n                box-sizing: border-box;\r\n        padding: 20px;\r\n        background-color: $colorMain;\r\n        -webkit-box-shadow: $shadow1;\r\n                box-shadow: $shadow1;\r\n        border-radius: 5px;\r\n        -webkit-box-pack: center;\r\n            -ms-flex-pack: center;\r\n                justify-content: center;\r\n        -webkit-box-align: space-between;\r\n            -ms-flex-align: space-between;\r\n                align-items: space-between;\r\n\r\n        &__title {\r\n            word-wrap: break-word;\r\n        }\r\n\r\n        &__buttons {\r\n            display: -webkit-box;\r\n            display: -ms-flexbox;\r\n            display: flex;\r\n            -webkit-box-pack: end;\r\n                -ms-flex-pack: end;\r\n                    justify-content: flex-end;\r\n            width: 100%;\r\n        }\r\n\r\n        &__button {\r\n            border-radius: 5px;\r\n            border: none;\r\n            outline: none;\r\n            background-color: $colorMain;\r\n            margin-bottom: 10px;\r\n            width: 30%;\r\n            height: 30px;\r\n            margin-left: 10px;\r\n            -webkit-box-sizing: border-box;\r\n                    box-sizing: border-box;\r\n            cursor: pointer;\r\n            -webkit-transition: ease 0.1s;\r\n            -o-transition: ease 0.1s;\r\n            transition: ease 0.1s;\r\n            -webkit-box-shadow: $shadow1;\r\n                    box-shadow: $shadow1;\r\n            &:hover {\r\n              -webkit-box-shadow: $shadow2;\r\n                      box-shadow: $shadow2;\r\n            }\r\n            &:active {\r\n              -webkit-box-shadow:  $shadow3;\r\n                      box-shadow:  $shadow3;\r\n            }\r\n        }\r\n    }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.remove-event-wrapper {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  position: absolute;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #b0dfc9;\n}\n.remove-event-wrapper .remove-event {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  max-width: 500px;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 20px;\n  background-color: #b0dfc9;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-radius: 5px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: space-between;\n  -ms-flex-align: space-between;\n  align-items: space-between;\n}\n.remove-event-wrapper .remove-event__title {\n  word-wrap: break-word;\n}\n.remove-event-wrapper .remove-event__title span {\n  font-weight: bold;\n}\n.remove-event-wrapper .remove-event__buttons {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n  -ms-flex-pack: end;\n  justify-content: flex-end;\n  width: 100%;\n}\n.remove-event-wrapper .remove-event__button {\n  border-radius: 5px;\n  border: none;\n  outline: none;\n  background-color: #b0dfc9;\n  margin-bottom: 10px;\n  width: 30%;\n  height: 30px;\n  margin-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n.remove-event-wrapper .remove-event__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.remove-event-wrapper .remove-event__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}", "",{"version":3,"sources":["webpack://./components/removeEvent/removeEvent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,0BAAA;EACI,qBAAA;EACJ,OAAA;EACA,MAAA;EACA,WAAA;EACA,YAAA;EACA,yBCxBQ;ADuBZ;AAGI;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,gBAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,yBCtCI;EDuCJ,8DChCE;EDiCM,sDCjCN;EDkCF,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,gCAAA;EACI,6BAAA;EACI,0BAAA;AADhB;AAGQ;EACI,qBAAA;AADZ;AAGY;EACI,iBAAA;AADhB;AAKQ;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,qBAAA;EACI,kBAAA;EACI,yBAAA;EACR,WAAA;AAHZ;AAMQ;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,yBCvEA;EDwEA,mBAAA;EACA,UAAA;EACA,YAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DC3EF;ED4EU,sDC5EV;ADwEV;AAKY;EACE,8DC7EJ;ED8EY,sDC9EZ;AD2EV;AAKY;EACE,6CChFJ;EDiFY,qCCjFZ;AD8EV","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.remove-event-wrapper {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    position: absolute;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: $colorMain;\r\n\r\n    .remove-event {\r\n        display: -webkit-box;\r\n        display: -ms-flexbox;\r\n        display: flex;\r\n        max-width: 500px;\r\n        -webkit-box-orient: vertical;\r\n        -webkit-box-direction: normal;\r\n            -ms-flex-direction: column;\r\n                flex-direction: column;\r\n        -webkit-box-sizing: border-box;\r\n                box-sizing: border-box;\r\n        padding: 20px;\r\n        background-color: $colorMain;\r\n        -webkit-box-shadow: $shadow1;\r\n                box-shadow: $shadow1;\r\n        border-radius: 5px;\r\n        -webkit-box-pack: center;\r\n            -ms-flex-pack: center;\r\n                justify-content: center;\r\n        -webkit-box-align: space-between;\r\n            -ms-flex-align: space-between;\r\n                align-items: space-between;\r\n\r\n        &__title {\r\n            word-wrap: break-word;\r\n\r\n            span {\r\n                font-weight: bold;\r\n            }\r\n        }\r\n\r\n        &__buttons {\r\n            display: -webkit-box;\r\n            display: -ms-flexbox;\r\n            display: flex;\r\n            -webkit-box-pack: end;\r\n                -ms-flex-pack: end;\r\n                    justify-content: flex-end;\r\n            width: 100%;\r\n        }\r\n\r\n        &__button {\r\n            border-radius: 5px;\r\n            border: none;\r\n            outline: none;\r\n            background-color: $colorMain;\r\n            margin-bottom: 10px;\r\n            width: 30%;\r\n            height: 30px;\r\n            margin-left: 10px;\r\n            -webkit-box-sizing: border-box;\r\n                    box-sizing: border-box;\r\n            cursor: pointer;\r\n            -webkit-transition: ease 0.1s;\r\n            -o-transition: ease 0.1s;\r\n            transition: ease 0.1s;\r\n            -webkit-box-shadow: $shadow1;\r\n                    box-shadow: $shadow1;\r\n            &:hover {\r\n              -webkit-box-shadow: $shadow2;\r\n                      box-shadow: $shadow2;\r\n            }\r\n            &:active {\r\n              -webkit-box-shadow:  $shadow3;\r\n                      box-shadow:  $shadow3;\r\n            }\r\n        }\r\n    }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12775,7 +13166,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#main {\n  width: 70vw;\n  height: 100%;\n  margin: auto;\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  box-sizing: border-box;\n}\n@media (max-width: 1100px) {\n  #main {\n    width: 95%;\n  }\n}\n@media (max-width: 800px) {\n  #main {\n    flex-direction: column;\n    margin-top: 20px;\n  }\n}\n\nbody {\n  height: 90vh;\n  padding: 1%;\n  box-sizing: border-box;\n  background-color: #b0dfc9;\n}", "",{"version":3,"sources":["webpack://./styles/main.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACI,WAAA;EACA,YAAA;EACA,YAAA;EACA,iCCKI;EDJJ,aAAA;EACA,sBAAA;AAAJ;AAEI;EARJ;IASQ,UAAA;EACN;AACF;AACI;EAZJ;IAaQ,sBAAA;IACA,gBAAA;EAEN;AACF;;AACA;EACI,YAAA;EACA,WAAA;EACA,sBAAA;EACA,yBClBQ;ADoBZ","sourcesContent":["@import './variables.scss';\r\n\r\n#main {\r\n    width: 70vw;\r\n    height: 100%;\r\n    margin: auto;\r\n    font-family: $font2;\r\n    display: flex;\r\n    box-sizing: border-box;\r\n\r\n    @media (max-width: 1100px) {\r\n        width: 95%;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n        flex-direction: column;\r\n        margin-top: 20px;\r\n    }\r\n}\r\n\r\nbody {\r\n    height: 90vh;\r\n    padding: 1%;\r\n    box-sizing: border-box; \r\n    background-color: $colorMain;\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#main {\n  width: 70vw;\n  height: 100%;\n  margin: auto;\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  box-sizing: border-box;\n}\n@media (max-width: 1100px) {\n  #main {\n    width: 95%;\n  }\n}\n@media (max-width: 800px) {\n  #main {\n    flex-direction: column;\n    margin-top: 20px;\n  }\n}\n\nbody {\n  height: 90vh;\n  margin: 0;\n  padding: 1%;\n  box-sizing: border-box;\n  background-color: #b0dfc9;\n}", "",{"version":3,"sources":["webpack://./styles/main.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACI,WAAA;EACA,YAAA;EACA,YAAA;EACA,iCCKI;EDJJ,aAAA;EACA,sBAAA;AAAJ;AAEI;EARJ;IASQ,UAAA;EACN;AACF;AACI;EAZJ;IAaQ,sBAAA;IACA,gBAAA;EAEN;AACF;;AACA;EACI,YAAA;EACA,SAAA;EACA,WAAA;EACA,sBAAA;EACA,yBCnBQ;ADqBZ","sourcesContent":["@import './variables.scss';\r\n\r\n#main {\r\n    width: 70vw;\r\n    height: 100%;\r\n    margin: auto;\r\n    font-family: $font2;\r\n    display: flex;\r\n    box-sizing: border-box;\r\n\r\n    @media (max-width: 1100px) {\r\n        width: 95%;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n        flex-direction: column;\r\n        margin-top: 20px;\r\n    }\r\n}\r\n\r\nbody {\r\n    height: 90vh;\r\n    margin: 0;\r\n    padding: 1%;\r\n    box-sizing: border-box; \r\n    background-color: $colorMain;\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12995,6 +13386,24 @@ var code = "<template>\r\n  <h1 class=\"calendar-header__header\">Meeting Room #
 
 /***/ }),
 
+/***/ "./components/eventFlag/eventFlag.html":
+/*!*********************************************!*\
+  !*** ./components/eventFlag/eventFlag.html ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// Module
+var code = "<template>\r\n  <button class=\"event-flag__button\">X</button>\r\n  <p class=\"event-flag__name\"></p>\r\n</template>";
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
+
+/***/ }),
+
 /***/ "./components/newEvent/newEvent.html":
 /*!*******************************************!*\
   !*** ./components/newEvent/newEvent.html ***!
@@ -13136,6 +13545,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_calendarHeader_scss__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./components/eventFlag/eventFlag.scss":
+/*!*********************************************!*\
+  !*** ./components/eventFlag/eventFlag.scss ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_eventFlag_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./eventFlag.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/eventFlag/eventFlag.scss");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_eventFlag_scss__WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_eventFlag_scss__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
 
 /***/ }),
 
