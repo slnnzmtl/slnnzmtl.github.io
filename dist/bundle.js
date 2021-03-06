@@ -114,11 +114,11 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
       var _this2 = this;
 
       this.data.participants = _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.users;
-      this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__.default.parseElement(_authComponent_html__WEBPACK_IMPORTED_MODULE_0__.default));
-      this.classList.add('auth-wrapper');
-      this.select = this.querySelector('.auth__select');
-      this.button = this.querySelector('.auth__button');
       this.fillUsers(this.select, this.data.participants);
+      this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__.default.parseElement(_authComponent_html__WEBPACK_IMPORTED_MODULE_0__.default));
+      this.classList.add("auth-wrapper");
+      this.select = this.querySelector(".auth__select");
+      this.button = this.querySelector(".auth__button");
 
       this.button.onclick = function () {
         return _this2.confirm(_this2.select.value);
@@ -130,7 +130,7 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
       _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__.default.elementMultiplier('option', ['value'], select, users.map(function (item) {
         return item.data.name;
       }));
-      this.select.querySelectorAll('option').forEach(function (item) {
+      this.select.querySelectorAll("option").forEach(function (item) {
         item.innerText = item.value;
       });
     }
@@ -140,10 +140,11 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
       var userObject = this.data.participants.find(function (item) {
         return item.data.name === user;
       });
+      var newUser;
       userObject = userObject.data;
-      var newUser = userObject.isAdmin === 'true' ? new _utils_roles__WEBPACK_IMPORTED_MODULE_2__.Admin(userObject) : new _utils_roles__WEBPACK_IMPORTED_MODULE_2__.User(userObject);
-      _utils_cookies__WEBPACK_IMPORTED_MODULE_3__.setCookie('currentUser', JSON.stringify(newUser));
-      (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_5__.publish)('login');
+      newUser = userObject.isAdmin === "true" ? new _utils_roles__WEBPACK_IMPORTED_MODULE_2__.Admin(userObject) : new _utils_roles__WEBPACK_IMPORTED_MODULE_2__.User(userObject);
+      _utils_cookies__WEBPACK_IMPORTED_MODULE_3__.setCookie("currentUser", JSON.stringify(newUser));
+      (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_5__.publish)("login");
       this.remove();
     }
   }]);
@@ -166,13 +167,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ calendarComponent)
 /* harmony export */ });
-/* harmony import */ var _eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../eventFlag/eventFlag */ "./components/eventFlag/eventFlag.js");
-/* harmony import */ var _calendarComponent_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendarComponent.scss */ "./components/calendarComponent/calendarComponent.scss");
-/* harmony import */ var _assets_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/data */ "./assets/data.js");
-/* harmony import */ var _utils_draggable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/draggable */ "./utils/draggable.js");
-/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/eventBus */ "./utils/eventBus.js");
-/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
+/* harmony import */ var _calendarComponent_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./calendarComponent.scss */ "./components/calendarComponent/calendarComponent.scss");
+/* harmony import */ var _assets_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/data */ "./assets/data.js");
+/* harmony import */ var _utils_draggable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/draggable */ "./utils/draggable.js");
+/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/eventBus */ "./utils/eventBus.js");
+/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
+/* harmony import */ var _tableColumn_tableColumn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tableColumn/tableColumn */ "./components/tableColumn/tableColumn.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -211,7 +212,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var filter = 'All members';
+var me = "calendar-component";
+var filter = "All members";
 
 var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
   _inherits(calendarComponent, _HTMLElement);
@@ -219,166 +221,133 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
   var _super = _createSuper(calendarComponent);
 
   function calendarComponent() {
+    var _this2;
+
     _classCallCheck(this, calendarComponent);
 
-    return _super.call(this);
+    _this2 = _super.call(this);
+    _this2.data = {
+      isAdmin: Cookies.getCookie("currentUser") ? JSON.parse(Cookies.getCookie("currentUser")).isAdmin : "null"
+    };
+    return _this2;
   }
 
   _createClass(calendarComponent, [{
     key: "connectedCallback",
     value: function connectedCallback() {
+      var _this3 = this;
+
+      this.classList.add('calendar');
+      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_1__.workingHours));
+
       var _this = this;
 
-      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_2__.workingHours, _assets_data__WEBPACK_IMPORTED_MODULE_2__.workingDays));
-      this.classList.add('calendar');
-      _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__.subscribe('participantFilterChanged', function (value) {
+      this.classList.add("calendar");
+      _utils_eventBus__WEBPACK_IMPORTED_MODULE_3__.subscribe("participantFilterChanged", function (value) {
         filter = value;
 
-        _this.fillTable();
+        _this3.clearTable();
+
+        _this3.insertData();
       });
-      _utils_eventBus__WEBPACK_IMPORTED_MODULE_4__.subscribe('refreshEvents', function () {
-        _this.getData();
+      _utils_eventBus__WEBPACK_IMPORTED_MODULE_3__.subscribe('refreshEvents', function () {
+        _this3.clearTable();
+
+        _this3.insertData();
       });
-      this.fillTable();
+      this.insertData();
     }
-  }, {
-    key: "getData",
-    value: function getData() {
-      var _this2 = this;
-
-      _utils_store__WEBPACK_IMPORTED_MODULE_5__.default.getEvents().then(function () {
-        _this2.fillTable();
-      });
-    }
-  }, {
-    key: "createTable",
-    value: function createTable(hours, days) {
-      var table = document.createElement('table');
-      var tableHeader = document.createElement('tr');
-      tableHeader.insertAdjacentHTML('afterbegin', "\n      <th>Time</th>\n    ");
-      days.forEach(function (item) {
-        var th = document.createElement('th');
-        th.innerText = item;
-        tableHeader.appendChild(th);
-      });
-      tableHeader.classList.add('table-header');
-      table.appendChild(tableHeader);
-      hours.forEach(function (hour) {
-        var tr = document.createElement('tr');
-        var th = document.createElement('th');
-        th.classList.add('row-header');
-        th.innerText = "".concat(hour, ":00");
-        tr.appendChild(th);
-        days.forEach(function (item) {
-          var td = document.createElement('td');
-          td.dataset.day = item;
-          td.dataset.time = hour;
-          td.setAttribute('ondragover', 'onDragOver(event)');
-          td.setAttribute('ondrop', 'onDrop(event)');
-          tr.appendChild(td);
-        });
-        table.appendChild(tr);
-      });
-      return table;
-    }
-  }, {
-    key: "fillTable",
-    value: function () {
-      var _fillTable = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var table, events, tableClone, tableCells;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                table = this.querySelector('table');
-                _context.next = 3;
-                return this.filterEvents();
-
-              case 3:
-                events = _context.sent;
-                tableClone = table.cloneNode(true);
-                tableCells = tableClone.querySelectorAll('tr td');
-
-                if (events.length) {
-                  _context.next = 8;
-                  break;
-                }
-
-                throw new Error('No events');
-
-              case 8:
-                events.forEach(function (event) {
-                  tableCells.forEach(function (cell) {
-                    if (cell.dataset.day === event.data.day && cell.dataset.time === event.data.time) {
-                      var flag = new _eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_0__.default({
-                        id: event.id,
-                        name: event.data.name,
-                        day: event.data.day,
-                        time: event.data.time
-                      });
-                      cell.appendChild(flag);
-                    }
-                  });
-                });
-                table.replaceWith(tableClone);
-                return _context.abrupt("return", table);
-
-              case 11:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function fillTable() {
-        return _fillTable.apply(this, arguments);
-      }
-
-      return fillTable;
-    }()
   }, {
     key: "clearTable",
     value: function clearTable() {
-      var flags = document.querySelectorAll('.event-flag');
-      flags.forEach(function (item) {
-        item.remove();
+      var container = this.querySelector('.table-container');
+      if (container) container.remove();
+    }
+  }, {
+    key: "insertData",
+    value: function insertData() {
+      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_1__.workingDays, _assets_data__WEBPACK_IMPORTED_MODULE_1__.workingHours));
+    }
+  }, {
+    key: "createTable",
+    value: function createTable(days, hours) {
+      var table = document.createElement('div');
+      var rowHeader = document.createElement("div");
+      var header = document.createElement("div");
+      table.classList.add('table-container');
+      header.classList.add("table-cell");
+      header.classList.add("table-header");
+      header.textContent = "Time";
+      rowHeader.appendChild(header);
+      rowHeader.classList.add("table-column");
+      rowHeader.classList.add("row-header");
+      hours.forEach(function (item) {
+        var elem = document.createElement("div");
+        elem.classList.add("table-cell");
+        elem.classList.add("table-header");
+        elem.textContent = "".concat(item, ":00");
+        rowHeader.appendChild(elem);
       });
+      table.appendChild(rowHeader);
+      this.filterEvents().then(function (res) {
+        days.forEach(function (day) {
+          var filtered = res.filter(function (event) {
+            return event.data.day === day;
+          });
+          table.appendChild(new _tableColumn_tableColumn__WEBPACK_IMPORTED_MODULE_5__.default(hours, day, filtered.length > 0 ? filtered : null));
+        });
+      });
+      return table;
     }
   }, {
     key: "filterEvents",
     value: function () {
       var _filterEvents = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var events, value, result;
+        var result;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                events = _utils_store__WEBPACK_IMPORTED_MODULE_5__.default.events;
-                value = filter === 'Choose members' ? '' : filter;
-                this.clearTable();
                 result = [];
+                _context2.next = 3;
+                return _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.getEvents().then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                  var events, value;
+                  return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          events = _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.events;
+                          value = filter === 'Choose members' ? '' : filter;
 
-                if (value !== 'All members') {
-                  if (events && events !== 'undefined') {
-                    events.forEach(function (item) {
-                      if (item.data.participants.includes(value)) {
-                        result.push(item);
+                          if (value !== 'All members') {
+                            if (events && events !== 'undefined') {
+                              events.forEach(function (item) {
+                                if (item.data.participants.includes(value)) {
+                                  result.push(item);
+                                }
+                              });
+                            }
+                          } else {
+                            result = events;
+                          }
+
+                        case 3:
+                        case "end":
+                          return _context.stop();
                       }
-                    });
-                  }
-                } else {
-                  result = events;
-                }
+                    }
+                  }, _callee);
+                })));
 
+              case 3:
                 return _context2.abrupt("return", result);
 
-              case 6:
+              case 4:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee2);
       }));
 
       function filterEvents() {
@@ -387,12 +356,28 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
 
       return filterEvents;
     }()
+  }, {
+    key: "removeButtonsAddSettings",
+    value: function removeButtonsAddSettings() {
+      var _this4 = this;
+
+      var _this = this;
+
+      var buttons = this.querySelectorAll(".event-flag__button");
+      buttons.forEach(function (button) {
+        button.style.display = _this4.data.isAdmin ? "block" : "none";
+        button.addEventListener("click", function (e) {
+          _this.showRemoveWindow(e.target);
+        });
+      });
+    }
   }]);
 
   return calendarComponent;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
 
 
+;
 
 /***/ }),
 
@@ -410,12 +395,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/eventBus */ "./utils/eventBus.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _calendarHeader_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendarHeader.html */ "./components/calendarHeader/calendarHeader.html");
-/* harmony import */ var _assets_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/data */ "./assets/data.js");
-/* harmony import */ var _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/ComponentsHelper */ "./utils/ComponentsHelper.js");
-/* harmony import */ var _components_newEvent_newEvent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/newEvent/newEvent */ "./components/newEvent/newEvent.js");
-/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/cookies */ "./utils/cookies.js");
-/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
-/* harmony import */ var _calendarHeader_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./calendarHeader.scss */ "./components/calendarHeader/calendarHeader.scss");
+/* harmony import */ var _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/ComponentsHelper */ "./utils/ComponentsHelper.js");
+/* harmony import */ var _newEvent_newEvent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../newEvent/newEvent */ "./components/newEvent/newEvent.js");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
+/* harmony import */ var _calendarHeader_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./calendarHeader.scss */ "./components/calendarHeader/calendarHeader.scss");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -451,74 +434,65 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
 var CalendarHeader = /*#__PURE__*/function (_HTMLElement) {
   _inherits(CalendarHeader, _HTMLElement);
 
   var _super = _createSuper(CalendarHeader);
 
   function CalendarHeader() {
-    var _this;
-
     _classCallCheck(this, CalendarHeader);
 
-    _this = _super.call(this);
-    _this.data = {// participants: Store.users ? Store.users : [],
-      // isAdmin: Cookies.getCookie("currentUser") ? JSON.parse(Cookies.getCookie("currentUser")).isAdmin : "null"
-    };
-    return _this;
+    return _super.call(this);
   }
 
   _createClass(CalendarHeader, [{
     key: "connectedCallback",
     value: function connectedCallback() {
-      var _this2 = this;
+      var _this = this;
 
-      this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__.default.parseElement(_calendarHeader_html__WEBPACK_IMPORTED_MODULE_1__.default));
-      this.classList.add("calendar-header");
-      this.select = this.querySelector(".calendar-header__filter");
-      this.createButton = this.querySelector(".calendar-header__button");
-      this.logoutButton = this.querySelector(".calendar-header__logout");
-      this.createButton.style.display = _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.isAdmin ? "block" : "none";
-      this.select.insertAdjacentHTML("afterbegin", "\n      <option value=\"All members\">All members</option>\n    ");
+      this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_2__.default.parseElement(_calendarHeader_html__WEBPACK_IMPORTED_MODULE_1__.default));
+      this.classList.add('calendar-header');
+      this.select = this.querySelector('.calendar-header__filter');
+      this.createButton = this.querySelector('.calendar-header__button');
+      this.logoutButton = this.querySelector('.calendar-header__logout');
+      this.createButton.style.display = _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.isAdmin ? 'block' : 'none';
+      this.select.insertAdjacentHTML('afterbegin', "\n      <option value=\"All members\">All members</option>\n    ");
 
       this.select.onchange = function () {
-        return (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_0__.publish)("participantFilterChanged", _this2.select.value);
+        return (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_0__.publish)('participantFilterChanged', _this.select.value);
       };
 
       this.createButton.onclick = function () {
-        return _this2.newEvent();
+        return _this.newEvent();
       };
 
       this.logoutButton.onclick = function () {
-        return _this2.logout();
+        return _this.logout();
       };
 
-      this.fillParticipants(this.select, _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.users);
+      this.fillParticipants(this.select, _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.users);
     }
   }, {
     key: "fillParticipants",
     value: function fillParticipants(select) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-      _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_3__.default.elementMultiplier("option", ["value"], select, data.map(function (item) {
+      _utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_2__.default.elementMultiplier('option', ['value'], select, data.map(function (item) {
         return item.data.name;
       }));
-      this.select.querySelectorAll("option").forEach(function (item) {
+      this.select.querySelectorAll('option').forEach(function (item) {
         item.innerText = item.value;
       });
     }
   }, {
     key: "newEvent",
     value: function newEvent() {
-      var main = document.querySelector("#main");
-      main.appendChild(new _components_newEvent_newEvent__WEBPACK_IMPORTED_MODULE_4__.default());
+      this.appendChild(new _newEvent_newEvent__WEBPACK_IMPORTED_MODULE_3__.default());
     }
   }, {
     key: "logout",
     value: function logout() {
-      _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.clearCurrentUser();
-      (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_0__.publish)("logout");
+      _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.clearCurrentUser();
+      (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_0__.publish)('logout');
     }
   }]);
 
@@ -584,7 +558,7 @@ var EventFlag = /*#__PURE__*/function (_HTMLElement) {
 
   var _super = _createSuper(EventFlag);
 
-  function EventFlag(options) {
+  function EventFlag(id, options) {
     var _this;
 
     _classCallCheck(this, EventFlag);
@@ -594,7 +568,7 @@ var EventFlag = /*#__PURE__*/function (_HTMLElement) {
       time: options.time,
       day: options.day,
       name: options.name,
-      id: options.id
+      id: id
     };
     _this.fields = {};
 
@@ -628,13 +602,12 @@ var EventFlag = /*#__PURE__*/function (_HTMLElement) {
     key: "showRemoveWindow",
     value: function showRemoveWindow() {
       var main = document.querySelector('#main');
-      var removeWindow = new _removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_2__.default({
+      main.insertAdjacentElement('afterbegin', new _removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_2__.default({
         name: this.data.name,
         day: this.data.day,
         time: this.data.time,
         id: this.data.id
-      });
-      main.insertAdjacentElement('afterbegin', removeWindow);
+      }, this));
     }
   }]);
 
@@ -763,14 +736,11 @@ var NewEvent = /*#__PURE__*/function (_HTMLElement) {
       var object = {};
       object.name = this.name.value;
       object.day = this.days.value;
-      object.time = this.time.value.split(":")[0];
+      object.time = +this.time.value.split(":")[0];
       object.participants = this.querySelector(".select-multiply__value").innerText.split(",");
 
       if (this.checkFields(object)) {
-        // const cookies = Cookies.getCookie("calendar");
-        // const events = cookies ? JSON.parse(cookies) : [];
         if (!this.checkIfExist(_utils_store__WEBPACK_IMPORTED_MODULE_6__.default.events, object)) {
-          // if (events && events !== "undefined") {    
           _utils_store__WEBPACK_IMPORTED_MODULE_6__.default.pushEvent(object);
           object = {};
           this.closeTab();
@@ -910,12 +880,13 @@ var RemoveEvent = /*#__PURE__*/function (_HTMLElement) {
 
   var _super = _createSuper(RemoveEvent);
 
-  function RemoveEvent(options) {
+  function RemoveEvent(options, parent) {
     var _this;
 
     _classCallCheck(this, RemoveEvent);
 
     _this = _super.call(this);
+    _this.parent = parent;
 
     _this.classList.add("remove-event-wrapper");
 
@@ -950,35 +921,24 @@ var RemoveEvent = /*#__PURE__*/function (_HTMLElement) {
     key: "removeEvent",
     value: function () {
       var _removeEvent = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id) {
+        var _this3 = this;
+
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.deleteEvent(id).then(function () {
-                  console.log('deleted');
-                }); // const events = await Store.getEvents(); 
-                // let day = this.data.day;
-                // let time = this.data.time;
-                // events.forEach((item, index) => {
-                //   if (item.day === day && item.time === time) {
-                //     events.splice(index, 1);
-                //   }
-                // });
-                // if (events.length > 0) {
-                //   Cookies.setCookie('calendar', JSON.stringify(events));
-                // } else {
-                //   Cookies.deleteCookie('calendar');
-                // }
+                  _this3.parent.remove();
 
-                this.closeTab();
-                _utils_eventBus_js__WEBPACK_IMPORTED_MODULE_1___default().publish("refreshEvents");
+                  _this3.closeTab();
+                });
 
-              case 3:
+              case 1:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee);
       }));
 
       function removeEvent(_x) {
@@ -1173,6 +1133,206 @@ var SelectComponent = /*#__PURE__*/function (_HTMLElement) {
 
 /***/ }),
 
+/***/ "./components/tableCell/tableCell.js":
+/*!*******************************************!*\
+  !*** ./components/tableCell/tableCell.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TableCell)
+/* harmony export */ });
+/* harmony import */ var _eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../eventFlag/eventFlag */ "./components/eventFlag/eventFlag.js");
+/* harmony import */ var _tableCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tableCell.scss */ "./components/tableCell/tableCell.scss");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var TableCell = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(TableCell, _HTMLElement);
+
+  var _super = _createSuper(TableCell);
+
+  function TableCell(data) {
+    var _this;
+
+    var flag = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    _classCallCheck(this, TableCell);
+
+    _this = _super.call(this);
+    _this.data = {
+      day: data.day,
+      time: data.time,
+      flag: flag
+    };
+
+    _this.classList.add('table-cell');
+
+    _this.setAttribute('ondragover', 'onDragOver(event)');
+
+    _this.setAttribute('ondrop', 'onDrop(event)');
+
+    return _this;
+  }
+
+  _createClass(TableCell, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      if (_typeof(this.data.flag) === "object") {
+        this.appendChild(new _eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_0__.default(this.data.flag.id, this.data.flag.data));
+      }
+    }
+  }]);
+
+  return TableCell;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+
+
+/***/ }),
+
+/***/ "./components/tableColumn/tableColumn.js":
+/*!***********************************************!*\
+  !*** ./components/tableColumn/tableColumn.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TableColumn)
+/* harmony export */ });
+/* harmony import */ var _tableCell_tableCell__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tableCell/tableCell */ "./components/tableCell/tableCell.js");
+/* harmony import */ var _tableColumn_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tableColumn.scss */ "./components/tableColumn/tableColumn.scss");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var TableColumn = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(TableColumn, _HTMLElement);
+
+  var _super = _createSuper(TableColumn);
+
+  function TableColumn() {
+    var _this;
+
+    var hoursArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var day = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var events = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+    _classCallCheck(this, TableColumn);
+
+    _this = _super.call(this);
+    _this.data = {
+      hoursArray: hoursArray,
+      day: day,
+      events: events
+    };
+
+    _this.classList.add('table-column');
+
+    return _this;
+  }
+
+  _createClass(TableColumn, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      var header = document.createElement("div");
+      header.classList.add("table-cell");
+      header.classList.add("table-header");
+      header.textContent = this.data.day;
+      this.appendChild(header);
+      this.appendChild(this.calc());
+    }
+  }, {
+    key: "calc",
+    value: function calc() {
+      var _this2 = this;
+
+      var container = document.createDocumentFragment();
+      var content;
+      this.data.hoursArray.forEach(function (time) {
+        var data = {
+          day: _this2.data.day,
+          time: time
+        };
+
+        if (_this2.data.events) {
+          content = _this2.data.events.find(function (item) {
+            return item.data.time === time;
+          });
+        }
+
+        container.appendChild(new _tableCell_tableCell__WEBPACK_IMPORTED_MODULE_0__.default(data, content || false));
+      });
+      return container;
+    }
+  }]);
+
+  return TableColumn;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+
+
+/***/ }),
+
 /***/ "./main.js":
 /*!*****************!*\
   !*** ./main.js ***!
@@ -1188,11 +1348,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/calendarComponent/calendarComponent */ "./components/calendarComponent/calendarComponent.js");
 /* harmony import */ var _components_removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/removeEvent/removeEvent */ "./components/removeEvent/removeEvent.js");
 /* harmony import */ var _components_eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/eventFlag/eventFlag */ "./components/eventFlag/eventFlag.js");
-/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/eventBus */ "./utils/eventBus.js");
-/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/cookies */ "./utils/cookies.js");
-/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/store */ "./utils/store.js");
-/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../styles/main.scss */ "./styles/main.scss");
+/* harmony import */ var _components_tableCell_tableCell__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/tableCell/tableCell */ "./components/tableCell/tableCell.js");
+/* harmony import */ var _components_tableColumn_tableColumn__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/tableColumn/tableColumn */ "./components/tableColumn/tableColumn.js");
+/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/eventBus */ "./utils/eventBus.js");
+/* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/cookies */ "./utils/cookies.js");
+/* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils/store */ "./utils/store.js");
+/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../styles/main.scss */ "./styles/main.scss");
+
+
 
 
 
@@ -1212,25 +1376,26 @@ customElements.define('select-multiply', _components_selectComponent_selectCompo
 customElements.define('calendar-component', _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__.default);
 customElements.define('remove-event', _components_removeEvent_removeEvent__WEBPACK_IMPORTED_MODULE_5__.default);
 customElements.define('event-flag', _components_eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_6__.default);
-_utils_store__WEBPACK_IMPORTED_MODULE_9__.default.getUsers().then(function () {
-  _utils_store__WEBPACK_IMPORTED_MODULE_9__.default.getEvents().then(function () {
+customElements.define('table-cell', _components_tableCell_tableCell__WEBPACK_IMPORTED_MODULE_7__.default);
+customElements.define('table-column', _components_tableColumn_tableColumn__WEBPACK_IMPORTED_MODULE_8__.default);
+_utils_store__WEBPACK_IMPORTED_MODULE_11__.default.getUsers().then(function () {
+  _utils_store__WEBPACK_IMPORTED_MODULE_11__.default.getEvents().then(function () {
     render();
   });
 });
-(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_7__.subscribe)("logout", function () {
+(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_9__.subscribe)("logout", function () {
   render();
 });
-(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_7__.subscribe)("login", function () {
+(0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_9__.subscribe)("login", function () {
   render();
 });
 
 function render() {
-  var currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_8__.getCookie("currentUser");
+  var currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_10__.getCookie("currentUser");
 
   if (!currentUser) {
     main.innerHTML = new _components_authComponent_authComponent_js__WEBPACK_IMPORTED_MODULE_2__.default().outerHTML;
   } else {
-    _utils_store__WEBPACK_IMPORTED_MODULE_9__.default.getCurrentUser();
     main.innerHTML = new _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__.default().outerHTML;
     main.appendChild(new _components_calendarHeader_calendarHeader_js__WEBPACK_IMPORTED_MODULE_0__.default());
   }
@@ -1661,10 +1826,9 @@ var UsersApi = /*#__PURE__*/function (_ServerApi) {
 
               case 5:
                 data = _context.sent;
-                console.log(data);
 
                 if (!data) {
-                  _context.next = 12;
+                  _context.next = 11;
                   break;
                 }
 
@@ -1673,10 +1837,10 @@ var UsersApi = /*#__PURE__*/function (_ServerApi) {
                 });
                 return _context.abrupt("return", data);
 
-              case 12:
+              case 11:
                 return _context.abrupt("return", []);
 
-              case 13:
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -1842,32 +2006,28 @@ function onDrop(event) {
 function putElement(element, dropzone) {
   var drop = {};
   var events = _store__WEBPACK_IMPORTED_MODULE_0__.default.events;
-  drop.day = dropzone.dataset.day;
-  drop.time = dropzone.dataset.time;
+  drop.day = dropzone.data.day;
+  drop.time = dropzone.data.time;
 
   if (dropzoneCheck(events, dropzone)) {
     dropzone.appendChild(element);
+    console.log(drop);
     element.data.day = drop.day;
     element.data.time = drop.time;
-    _store__WEBPACK_IMPORTED_MODULE_0__.default.updatePosition(element.data.id, drop);
+    _store__WEBPACK_IMPORTED_MODULE_0__.default.updatePosition(element.dataset.id, drop);
   }
 }
 
 function dropzoneCheck(events, drop) {
-  var result = 0;
+  var result = true;
 
-  if (drop.tagName === "TD") {
+  if (drop.tagName === "TABLE-CELL") {
     events.forEach(function (item) {
-      if (item.data.day === drop.dataset.day && item.data.time === drop.dataset.time) {
-        result += 1;
+      if (item.data.day === drop.data.day && item.data.time === drop.data.time) {
+        result = false;
       }
     });
-
-    if (result > 0) {
-      return false;
-    } else {
-      return true;
-    }
+    return result;
   }
 }
 
@@ -2031,9 +2191,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _api_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api/events */ "./utils/api/events.js");
 /* harmony import */ var _api_users__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api/users */ "./utils/api/users.js");
-/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/cookies */ "./utils/cookies.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./eventBus */ "./utils/eventBus.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./eventBus */ "./utils/eventBus.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_2__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2048,30 +2207,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var Store = /*#__PURE__*/function () {
   function Store() {
     _classCallCheck(this, Store);
 
-    this.state = {
-      currentUser: {} // isAdmin: Cookies.getCookie("currentUser") ? JSON.parse(Cookies.getCookie("currentUser")).isAdmin : 'false'
-
-    };
-    this.getCurrentUser();
+    this.state = {};
   }
 
   _createClass(Store, [{
-    key: "getCurrentUser",
-    value: function getCurrentUser() {
-      this.state.currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser") ? JSON.parse(_utils_cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser")) : {};
-    }
-  }, {
-    key: "clearCurrentUser",
-    value: function clearCurrentUser() {
-      _utils_cookies__WEBPACK_IMPORTED_MODULE_2__.deleteCookie("currentUser");
-      this.state.isAdmin = false;
-    }
-  }, {
     key: "getEvents",
     value: function () {
       var _getEvents = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -2109,7 +2252,7 @@ var Store = /*#__PURE__*/function () {
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
         _this.state.events.push(data);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_2__.publish)("refreshEvents");
       });
     }
   }, {
@@ -2128,7 +2271,7 @@ var Store = /*#__PURE__*/function () {
 
         _this2.state.events.splice(target, target);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_2__.publish)("refreshEvents");
       });
     }
   }, {
@@ -2182,7 +2325,7 @@ var Store = /*#__PURE__*/function () {
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
         _this3.state.users.push(data);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshUsers");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_2__.publish)("refreshUsers");
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2203,15 +2346,6 @@ var Store = /*#__PURE__*/function () {
         return this.state.users;
       } else {
         return new Error("No users in store");
-      }
-    }
-  }, {
-    key: "isAdmin",
-    get: function get() {
-      if (this.state.currentUser) {
-        return this.state.currentUser.isAdmin;
-      } else {
-        return new Error("No info in store");
       }
     }
   }]);
@@ -12992,7 +13126,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".calendar {\n  width: 80%;\n}\n@media (max-width: 800px) {\n  .calendar {\n    width: 100%;\n  }\n}\n.calendar table {\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-collapse: collapse;\n  width: 100%;\n  margin: auto;\n  height: 90vmin;\n  table-layout: fixed;\n  background-color: #b0dfc9;\n  border-radius: 30px;\n  border: 4px solid white;\n  overflow: hidden;\n}\n.calendar table .table-header th:first-child {\n  width: 4em;\n}\n.calendar table tr:first-child {\n  height: 2em !important;\n}\n.calendar table td {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  height: 10%;\n  padding: 0;\n  margin: 0;\n  font-size: 12px !important;\n}\n.calendar table td, .calendar table th {\n  border: 2px solid rgba(166, 211, 190, 0.5);\n  font-size: 14px;\n}\n@media (max-width: 700px) {\n  .calendar table td, .calendar table th {\n    font-size: 12px;\n  }\n}\n@media (max-width: 400px) {\n  .calendar table td, .calendar table th {\n    font-size: 8px;\n  }\n}\n.calendar table th {\n  font-weight: bold;\n  font-family: \"Lora\", serif;\n  box-sizing: border-box;\n  height: 50px;\n}\n@media (max-width: 1100px) {\n  .calendar table th {\n    font-size: 12px;\n  }\n}\n@media (max-width: 400px) {\n  .calendar table th {\n    font-size: 10px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/calendarComponent/calendarComponent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,UAAA;AAAF;AACE;EAFF;IAGI,WAAA;EAEF;AACF;AADA;EACE,sDCKQ;EDJR,8DCIQ;EDHR,yBAAA;EACA,WAAA;EACA,YAAA;EACA,cAAA;EACA,mBAAA;EACA,yBCTU;EDUV,mBCGQ;EDFR,uBAAA;EACA,gBAAA;AAGF;AADE;EACE,UAAA;AAGJ;AACI;EACE,sBAAA;AACN;AAGE;EACE,8BAAA;EACQ,sBAAA;EACR,WAAA;EACA,UAAA;EACA,SAAA;EACA,0BAAA;AADJ;AAIE;EACE,0CAAA;EACA,eAAA;AAFJ;AAGI;EAHF;IAII,eAAA;EAAJ;AACF;AACI;EANF;IAOI,cAAA;EAEJ;AACF;AACE;EACE,iBAAA;EACA,0BC1CI;ED2CJ,sBAAA;EACA,YAAA;AACJ;AAAI;EALF;IAMI,eAAA;EAGJ;AACF;AAFI;EARF;IASI,eAAA;EAKJ;AACF","sourcesContent":["@import '/styles/variables.scss';\r\n\r\n.calendar {\r\n  width: 80%;\r\n  @media (max-width: 800px) {\r\n    width: 100%;\r\n  }\r\ntable {\r\n  box-shadow: $shadow1;\r\n  -webkit-box-shadow:  $shadow1;\r\n  border-collapse: collapse;\r\n  width: 100%;\r\n  margin: auto;\r\n  height: 90vmin;\r\n  table-layout: fixed;\r\n  background-color: $colorMain;\r\n  border-radius: $border1;\r\n  border: 4px solid white;\r\n  overflow: hidden;\r\n\r\n  .table-header th:first-child{\r\n    width: 4em;\r\n  }\r\n\r\n  tr {\r\n    &:first-child {\r\n      height: 2em!important;\r\n    }\r\n  }\r\n\r\n  td {\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    height: 10%;\r\n    padding: 0;\r\n    margin: 0;\r\n    font-size: 12px!important;\r\n  }\r\n\r\n  td, th {\r\n    border: 2px solid rgba(166, 211, 190, 0.5);\r\n    font-size: 14px;\r\n    @media (max-width: 700px) {\r\n      font-size: 12px;\r\n    }\r\n    @media (max-width: 400px) {\r\n      font-size: 8px;\r\n    }\r\n  }\r\n\r\n  th {\r\n    font-weight: bold;\r\n    font-family: $font1;\r\n    box-sizing: border-box;\r\n    height: 50px;\r\n    @media (max-width: 1100px) {\r\n      font-size: 12px;\r\n    }\r\n    @media (max-width: 400px) {\r\n      font-size: 10px;\r\n    }\r\n  }\r\n}\r\n}\r\n\r\n","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".calendar {\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  width: 100%;\n  margin: auto;\n  height: 90vmin;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n  -ms-flex-pack: justify;\n  justify-content: space-between;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  background-color: #b0dfc9;\n  border-radius: 30px;\n  overflow: hidden;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n}\n@media (max-width: 800px) {\n  .calendar {\n    width: 100%;\n  }\n}\n.calendar .table-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  height: 100%;\n  width: 100%;\n}\n.calendar .table-header {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  font-family: \"Lora\", serif;\n  font-size: 15px;\n  font-weight: bold;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n@media (max-width: 400px) {\n  .calendar .table-header {\n    font-size: 8px;\n  }\n}\n.calendar .row-header {\n  width: 20em;\n}", "",{"version":3,"sources":["webpack://./components/calendarComponent/calendarComponent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EAME,8DCKQ;EDJA,sDCIA;EDFR,WAAA;EACA,YAAA;EACA,cAAA;EACA,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,yBAAA;EACI,sBAAA;EACI,8BAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,yBCjBU;EDkBV,mBCLQ;EDMR,gBAAA;EACA,8BAAA;EACQ,sBAAA;AANV;AAjBE;EAFF;IAGI,WAAA;EAoBF;AACF;AAGE;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,YAAA;EACA,WAAA;AADJ;AAIE;EAEE,oBAAA;EAEA,oBAAA;EAEA,aAAA;EACA,WAAA;EACA,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,0BCzCI;ED0CJ,eAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,gBAAA;AALJ;AAOI;EArBF;IAsBM,cAAA;EAJN;AACF;AAOE;EACE,WAAA;AALJ","sourcesContent":["@import '/styles/variables.scss';\r\n\r\n.calendar {\r\n\r\n  @media (max-width: 800px) {\r\n    width: 100%;\r\n  }\r\n\r\n  -webkit-box-shadow: $shadow1;\r\n          box-shadow: $shadow1;\r\n  \r\n  width: 100%;\r\n  margin: auto;\r\n  height: 90vmin;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n  -webkit-box-align:center;\r\n      -ms-flex-align:center;\r\n          align-items:center;\r\n  background-color: $colorMain;\r\n  border-radius: $border1;\r\n  overflow: hidden;\r\n  -webkit-box-sizing: border-box;\r\n          box-sizing: border-box;\r\n\r\n  .table-container {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    height: 100%;\r\n    width: 100%;\r\n  }\r\n\r\n  .table-header {\r\n\r\n    display: -webkit-box;\r\n\r\n    display: -ms-flexbox;\r\n\r\n    display: flex;\r\n    width: 100%;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    font-family: $font1;\r\n    font-size: 15px;\r\n    font-weight: bold;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    overflow: hidden;\r\n    \r\n    @media (max-width: 400px) {\r\n        font-size: 8px;\r\n    }\r\n  }\r\n\r\n  .row-header {\r\n    width: 20em;   \r\n  } \r\n}\r\n","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13020,7 +13154,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.calendar-header {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  flex-direction: column;\n  -webkit-box-align: start;\n  -ms-flex-align: start;\n  align-items: start;\n  margin-left: 60px;\n  width: 20%;\n  max-width: 300px;\n  height: 100%;\n}\n@media (max-width: 800px) {\n  .calendar-header {\n    flex-direction: row;\n    margin-left: 0;\n    width: 100%;\n    max-width: none;\n    justify-content: space-between;\n    align-items: center;\n    align-content: center;\n    height: 5vh;\n    margin-top: 20px;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header {\n    flex-direction: column;\n    align-items: flex-start;\n  }\n}\n.calendar-header__header {\n  font-size: 20px;\n  font-family: \"Lora\", serif;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  padding: 5px;\n  border-radius: 5px;\n  width: 100%;\n  box-sizing: border-box;\n  margin-bottom: 10px;\n  line-height: 1.5em;\n}\n@media (max-width: 800px) {\n  .calendar-header__header {\n    height: 100%;\n    margin: 0;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header__header {\n    font-size: 17px;\n    margin-bottom: 10px;\n  }\n}\n.calendar-header__options {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n  justify-content: flex-start;\n}\n@media (max-width: 800px) {\n  .calendar-header__options {\n    flex-direction: row;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    margin-left: 10px;\n    justify-content: space-between;\n    align-items: center;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header__options {\n    margin-left: 0;\n    width: 100%;\n  }\n}\n.calendar-header__filter {\n  font-size: 12px;\n  border-radius: 5px;\n  padding: 1em;\n  outline: none;\n  max-width: 30vw;\n  background-color: #b0dfc9;\n  border: none;\n  border-radius: 5px;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  margin-bottom: 10px;\n  width: 100%;\n  min-width: 150px;\n}\n.calendar-header__filter:hover {\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.calendar-header__filter:active {\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}\n@media (max-width: 800px) {\n  .calendar-header__filter {\n    margin: 0px;\n    margin-right: 10px;\n    min-width: none;\n    max-width: none;\n    width: 50%;\n    box-sizing: border-box;\n    font-size: 10px;\n    height: 100%;\n  }\n}\n.calendar-header__button {\n  width: 100%;\n  min-width: 150px;\n  background-color: #b0dfc9;\n  font-size: 25px;\n  font-weight: bold;\n  font-family: \"Lora\", serif;\n  cursor: pointer;\n  background-color: inherit;\n  border: none;\n  border-radius: 30px;\n  padding: 10px 30px 10px 30px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  outline: none;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n@media (max-width: 600px) {\n  .calendar-header__button {\n    font-size: 10px;\n    height: 100%;\n  }\n}\n@media (max-width: 800px) {\n  .calendar-header__button {\n    min-width: none;\n    width: 50%;\n    height: 100%;\n    font-size: 11px;\n  }\n}\n.calendar-header__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.calendar-header__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}\n.calendar-header__logout {\n  font-family: \"Roboto\", sans-serif;\n  margin-top: 20px;\n  cursor: pointer;\n  text-align: center;\n  font-size: 16px;\n  color: #000;\n  font-weight: bold;\n}\n.calendar-header__logout:hover {\n  color: #B9CBC3;\n}", "",{"version":3,"sources":["webpack://./components/calendarHeader/calendarHeader.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,sBAAA;EACA,wBAAA;EACI,qBAAA;EACI,kBAAA;EACR,iBAAA;EACA,UAAA;EACA,gBAAA;EACA,YAAA;AADF;AAGE;EAbF;IAcI,mBAAA;IACA,cAAA;IACA,WAAA;IACA,eAAA;IACA,8BAAA;IACA,mBAAA;IACA,qBAAA;IACA,WAAA;IACA,gBAAA;EAAF;AACF;AAEE;EAzBF;IA0BI,sBAAA;IACA,uBAAA;EACF;AACF;AACE;EACE,eAAA;EACA,0BC/BI;EDgCJ,sDC7BM;ED8BN,8DC9BM;ED+BN,YAAA;EACA,kBAAA;EACA,WAAA;EACA,sBAAA;EACA,mBAAA;EACA,kBAAA;AACJ;AACI;EAZF;IAaI,YAAA;IACA,SAAA;EAEJ;AACF;AAAI;EAjBF;IAkBI,eAAA;IACA,mBAAA;EAGJ;AACF;AAAE;EACE,aAAA;EACA,sBAAA;EACA,WAAA;EACA,YAAA;EACA,2BAAA;AAEJ;AAAI;EAPF;IAQI,mBAAA;IACA,WAAA;IACA,YAAA;IACA,SAAA;IACA,iBAAA;IACA,8BAAA;IACA,mBAAA;EAGJ;AACF;AAFI;EAhBF;IAiBI,cAAA;IACA,WAAA;EAKJ;AACF;AAFE;EACE,eAAA;EACA,kBAAA;EACA,YAAA;EAEA,aAAA;EACA,eAAA;EACA,yBCrFQ;EDsFR,YAAA;EACA,kBAAA;EACA,sDCjFM;EDkFN,8DClFM;EDmFN,mBAAA;EACA,WAAA;EACA,gBAAA;AAGJ;AADI;EACE,sDCvFI;EDwFJ,8DCxFI;AD2FV;AADI;EACE,qCC1FI;AD6FV;AAAI;EAxBF;IAyBI,WAAA;IACA,kBAAA;IACA,eAAA;IACA,eAAA;IACA,UAAA;IACA,sBAAA;IACA,eAAA;IACA,YAAA;EAGJ;AACF;AAAE;EACE,WAAA;EACA,gBAAA;EACA,yBCrHQ;EDsHR,eAAA;EACA,iBAAA;EACA,0BCpHI;EDgIJ,eAAA;EACA,yBAAA;EACA,YAAA;EACA,mBC1HM;ED2HN,4BAAA;EACA,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DCxIM;EDyIE,sDCzIF;ADgIV;AAdI;EAPF;IAQI,eAAA;IACA,YAAA;EAiBJ;AACF;AAhBI;EAXF;IAYI,eAAA;IACA,UAAA;IACA,YAAA;IAEA,eAAA;EAkBJ;AACF;AAJI;EACE,8DC1II;ED2II,sDC3IJ;ADiJV;AAJI;EACE,6CC7II;ED8II,qCC9IJ;ADoJV;AAFE;EACE,iCCvJI;EDwJJ,gBAAA;EACA,eAAA;EACA,kBAAA;EACA,eAAA;EACA,WAAA;EACA,iBAAA;AAIJ;AAFI;EACE,cCzKG;AD6KT","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.calendar-header {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  flex-direction: column;\r\n  -webkit-box-align:start;\r\n      -ms-flex-align:start;\r\n          align-items:start;\r\n  margin-left: 60px;\r\n  width: 20%;\r\n  max-width: 300px;\r\n  height: 100%;\r\n\r\n  @media (max-width: 800px) {\r\n    flex-direction: row;\r\n    margin-left: 0;\r\n    width: 100%;\r\n    max-width: none;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    align-content: center;\r\n    height: 5vh;\r\n    margin-top: 20px;\r\n  }\r\n\r\n  @media (max-width: 600px) {\r\n    flex-direction: column;\r\n    align-items: flex-start;\r\n  }\r\n\r\n  &__header {\r\n    font-size: 20px;\r\n    font-family: $font1;\r\n    box-shadow: $shadow1;\r\n    -webkit-box-shadow: $shadow1;\r\n    padding: 5px;\r\n    border-radius: 5px;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 10px;\r\n    line-height: 1.5em;\r\n\r\n    @media (max-width: 800px) {\r\n      height: 100%;\r\n      margin: 0;\r\n    }\r\n\r\n    @media (max-width: 600px) {\r\n      font-size: 17px;\r\n      margin-bottom: 10px;\r\n    }\r\n  }\r\n\r\n  &__options {\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: 100%;\r\n    height: 100%;\r\n    justify-content: flex-start;\r\n\r\n    @media (max-width: 800px) {\r\n      flex-direction: row;\r\n      width: 100%;\r\n      height: 100%;\r\n      margin: 0;\r\n      margin-left: 10px;\r\n      justify-content: space-between;\r\n      align-items: center;\r\n    }\r\n    @media (max-width: 600px) {\r\n      margin-left: 0;\r\n      width: 100%;\r\n    }\r\n  } \r\n\r\n  &__filter {\r\n    font-size: 12px;\r\n    border-radius: 5px;\r\n    padding: 1em;\r\n\r\n    outline: none;\r\n    max-width: 30vw;\r\n    background-color: $colorMain;\r\n    border: none;\r\n    border-radius: 5px;\r\n    box-shadow: $shadow1;\r\n    -webkit-box-shadow:  $shadow1;\r\n    margin-bottom: 10px;\r\n    width: 100%; \r\n    min-width: 150px;\r\n    \r\n    &:hover {\r\n      box-shadow: $shadow2;\r\n      -webkit-box-shadow:  $shadow2;\r\n    }\r\n    &:active {\r\n      box-shadow: $shadow3;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n      margin: 0px;\r\n      margin-right: 10px;\r\n      min-width: none;\r\n      max-width: none;\r\n      width: 50%;\r\n      box-sizing: border-box;\r\n      font-size: 10px;\r\n      height: 100%;\r\n    }\r\n  }\r\n\r\n  &__button {\r\n    width: 100%;\r\n    min-width: 150px;\r\n    background-color: $colorMain;\r\n    font-size: 25px;\r\n    font-weight: bold;\r\n    font-family: $font1;\r\n    @media (max-width: 600px) {\r\n      font-size: 10px;\r\n      height: 100%;\r\n    }\r\n    @media (max-width: 800px) {\r\n      min-width: none;\r\n      width: 50%;\r\n      height: 100%;\r\n\r\n      font-size: 11px;\r\n    }\r\n    cursor: pointer;\r\n    background-color: inherit;\r\n    border: none;\r\n    border-radius: $border1;\r\n    padding: 10px 30px 10px 30px;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    outline: none;\r\n    -webkit-transition: ease 0.1s;\r\n    -o-transition: ease 0.1s;\r\n    transition: ease 0.1s;\r\n    -webkit-box-shadow: $shadow1;\r\n            box-shadow: $shadow1;\r\n    &:hover {\r\n      -webkit-box-shadow: $shadow2;\r\n              box-shadow: $shadow2;\r\n    }\r\n    &:active {\r\n      -webkit-box-shadow: $shadow3;\r\n              box-shadow: $shadow3;\r\n    }\r\n  }\r\n\r\n  &__logout {\r\n    font-family: $font2;\r\n    margin-top: 20px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    font-size: 16px;\r\n    color: #000;\r\n    font-weight: bold;\r\n\r\n    &:hover {\r\n      color: $color1;\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.calendar-header {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  -webkit-box-align: start;\n  -ms-flex-align: start;\n  align-items: start;\n  margin-left: 60px;\n  width: 20%;\n  max-width: 300px;\n  height: 100%;\n}\n@media (max-width: 800px) {\n  .calendar-header {\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -ms-flex-direction: row;\n    flex-direction: row;\n    margin-left: 0;\n    width: 100%;\n    max-width: none;\n    -webkit-box-pack: justify;\n    -ms-flex-pack: justify;\n    justify-content: space-between;\n    -webkit-box-align: center;\n    -ms-flex-align: center;\n    align-items: center;\n    -ms-flex-line-pack: center;\n    align-content: center;\n    height: 5vh;\n    margin-top: 20px;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n    -ms-flex-direction: column;\n    flex-direction: column;\n    -webkit-box-align: start;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n}\n.calendar-header__header {\n  font-size: 20px;\n  font-family: \"Lora\", serif;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  padding: 5px;\n  border-radius: 5px;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-bottom: 10px;\n  line-height: 1.5em;\n}\n@media (max-width: 800px) {\n  .calendar-header__header {\n    height: 100%;\n    margin: 0;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header__header {\n    font-size: 17px;\n    margin-bottom: 10px;\n  }\n}\n.calendar-header__options {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n  -webkit-box-pack: start;\n  -ms-flex-pack: start;\n  justify-content: flex-start;\n}\n@media (max-width: 800px) {\n  .calendar-header__options {\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -ms-flex-direction: row;\n    flex-direction: row;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    margin-left: 10px;\n    -webkit-box-pack: justify;\n    -ms-flex-pack: justify;\n    justify-content: space-between;\n    -webkit-box-align: center;\n    -ms-flex-align: center;\n    align-items: center;\n  }\n}\n@media (max-width: 600px) {\n  .calendar-header__options {\n    margin-left: 0;\n    width: 100%;\n  }\n}\n.calendar-header__filter {\n  font-size: 12px;\n  border-radius: 5px;\n  padding: 1em;\n  outline: none;\n  max-width: 30vw;\n  background-color: #b0dfc9;\n  border: none;\n  border-radius: 5px;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  margin-bottom: 10px;\n  width: 100%;\n  min-width: 150px;\n}\n.calendar-header__filter:hover {\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.calendar-header__filter:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}\n@media (max-width: 800px) {\n  .calendar-header__filter {\n    margin: 0px;\n    margin-right: 10px;\n    min-width: none;\n    max-width: none;\n    width: 50%;\n    -webkit-box-sizing: border-box;\n    box-sizing: border-box;\n    font-size: 10px;\n    height: 100%;\n  }\n}\n.calendar-header__button {\n  width: 100%;\n  min-width: 150px;\n  background-color: #b0dfc9;\n  font-size: 25px;\n  font-weight: bold;\n  font-family: \"Lora\", serif;\n  cursor: pointer;\n  background-color: inherit;\n  border: none;\n  border-radius: 30px;\n  padding: 10px 30px 10px 30px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  outline: none;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n@media (max-width: 600px) {\n  .calendar-header__button {\n    font-size: 10px;\n    height: 100%;\n  }\n}\n@media (max-width: 800px) {\n  .calendar-header__button {\n    min-width: none;\n    width: 50%;\n    height: 100%;\n    font-size: 11px;\n  }\n}\n.calendar-header__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.calendar-header__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}\n.calendar-header__logout {\n  font-family: \"Roboto\", sans-serif;\n  margin-top: 20px;\n  cursor: pointer;\n  text-align: center;\n  font-size: 16px;\n  color: #000;\n  font-weight: bold;\n}\n.calendar-header__logout:hover {\n  color: #B9CBC3;\n}", "",{"version":3,"sources":["webpack://./components/calendarHeader/calendarHeader.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,wBAAA;EACI,qBAAA;EACI,kBAAA;EACR,iBAAA;EACA,UAAA;EACA,gBAAA;EACA,YAAA;AADF;AAGE;EAhBF;IAiBI,8BAAA;IACA,6BAAA;IACI,uBAAA;IACI,mBAAA;IACR,cAAA;IACA,WAAA;IACA,eAAA;IACA,yBAAA;IACI,sBAAA;IACI,8BAAA;IACR,yBAAA;IACI,sBAAA;IACI,mBAAA;IACR,0BAAA;IACI,qBAAA;IACJ,WAAA;IACA,gBAAA;EAAF;AACF;AAEE;EApCF;IAqCI,4BAAA;IACA,6BAAA;IACI,0BAAA;IACI,sBAAA;IACR,wBAAA;IACI,qBAAA;IACI,uBAAA;EACV;AACF;AACE;EACE,eAAA;EACA,0BC/CI;EDgDJ,sDC7CM;ED8CN,8DC9CM;ED+CN,YAAA;EACA,kBAAA;EACA,WAAA;EACA,8BAAA;EACQ,sBAAA;EACR,mBAAA;EACA,kBAAA;AACJ;AACI;EAbF;IAcI,YAAA;IACA,SAAA;EAEJ;AACF;AAAI;EAlBF;IAmBI,eAAA;IACA,mBAAA;EAGJ;AACF;AAAE;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,WAAA;EACA,YAAA;EACA,uBAAA;EACI,oBAAA;EACI,2BAAA;AAEZ;AAAI;EAdF;IAeI,8BAAA;IACA,6BAAA;IACI,uBAAA;IACI,mBAAA;IACR,WAAA;IACA,YAAA;IACA,SAAA;IACA,iBAAA;IACA,yBAAA;IACI,sBAAA;IACI,8BAAA;IACR,yBAAA;IACI,sBAAA;IACI,mBAAA;EAGZ;AACF;AAFI;EA9BF;IA+BI,cAAA;IACA,WAAA;EAKJ;AACF;AAFE;EACE,eAAA;EACA,kBAAA;EACA,YAAA;EAEA,aAAA;EACA,eAAA;EACA,yBCpHQ;EDqHR,YAAA;EACA,kBAAA;EACA,sDChHM;EDiHN,8DCjHM;EDkHN,mBAAA;EACA,WAAA;EACA,gBAAA;AAGJ;AADI;EACE,sDCtHI;EDuHJ,8DCvHI;AD0HV;AADI;EACE,6CCzHI;ED0HI,qCC1HJ;AD6HV;AAAI;EAzBF;IA0BI,WAAA;IACA,kBAAA;IACA,eAAA;IACA,eAAA;IACA,UAAA;IACA,8BAAA;IACQ,sBAAA;IACR,eAAA;IACA,YAAA;EAGJ;AACF;AAAE;EACE,WAAA;EACA,gBAAA;EACA,yBCtJQ;EDuJR,eAAA;EACA,iBAAA;EACA,0BCrJI;EDiKJ,eAAA;EACA,yBAAA;EACA,YAAA;EACA,mBC3JM;ED4JN,4BAAA;EACA,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DCzKM;ED0KE,sDC1KF;ADiKV;AAdI;EAPF;IAQI,eAAA;IACA,YAAA;EAiBJ;AACF;AAhBI;EAXF;IAYI,eAAA;IACA,UAAA;IACA,YAAA;IAEA,eAAA;EAkBJ;AACF;AAJI;EACE,8DC3KI;ED4KI,sDC5KJ;ADkLV;AAJI;EACE,6CC9KI;ED+KI,qCC/KJ;ADqLV;AAFE;EACE,iCCxLI;EDyLJ,gBAAA;EACA,eAAA;EACA,kBAAA;EACA,eAAA;EACA,WAAA;EACA,iBAAA;AAIJ;AAFI;EACE,cC1MG;AD8MT","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.calendar-header {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-align:start;\r\n      -ms-flex-align:start;\r\n          align-items:start;\r\n  margin-left: 60px;\r\n  width: 20%;\r\n  max-width: 300px;\r\n  height: 100%;\r\n\r\n  @media (max-width: 800px) {\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    margin-left: 0;\r\n    width: 100%;\r\n    max-width: none;\r\n    -webkit-box-pack: justify;\r\n        -ms-flex-pack: justify;\r\n            justify-content: space-between;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    height: 5vh;\r\n    margin-top: 20px;\r\n  }\r\n\r\n  @media (max-width: 600px) {\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-align: start;\r\n        -ms-flex-align: start;\r\n            align-items: flex-start;\r\n  }\r\n\r\n  &__header {\r\n    font-size: 20px;\r\n    font-family: $font1;\r\n    box-shadow: $shadow1;\r\n    -webkit-box-shadow: $shadow1;\r\n    padding: 5px;\r\n    border-radius: 5px;\r\n    width: 100%;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    margin-bottom: 10px;\r\n    line-height: 1.5em;\r\n\r\n    @media (max-width: 800px) {\r\n      height: 100%;\r\n      margin: 0;\r\n    }\r\n\r\n    @media (max-width: 600px) {\r\n      font-size: 17px;\r\n      margin-bottom: 10px;\r\n    }\r\n  }\r\n\r\n  &__options {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    width: 100%;\r\n    height: 100%;\r\n    -webkit-box-pack: start;\r\n        -ms-flex-pack: start;\r\n            justify-content: flex-start;\r\n\r\n    @media (max-width: 800px) {\r\n      -webkit-box-orient: horizontal;\r\n      -webkit-box-direction: normal;\r\n          -ms-flex-direction: row;\r\n              flex-direction: row;\r\n      width: 100%;\r\n      height: 100%;\r\n      margin: 0;\r\n      margin-left: 10px;\r\n      -webkit-box-pack: justify;\r\n          -ms-flex-pack: justify;\r\n              justify-content: space-between;\r\n      -webkit-box-align: center;\r\n          -ms-flex-align: center;\r\n              align-items: center;\r\n    }\r\n    @media (max-width: 600px) {\r\n      margin-left: 0;\r\n      width: 100%;\r\n    }\r\n  } \r\n\r\n  &__filter {\r\n    font-size: 12px;\r\n    border-radius: 5px;\r\n    padding: 1em;\r\n\r\n    outline: none;\r\n    max-width: 30vw;\r\n    background-color: $colorMain;\r\n    border: none;\r\n    border-radius: 5px;\r\n    box-shadow: $shadow1;\r\n    -webkit-box-shadow:  $shadow1;\r\n    margin-bottom: 10px;\r\n    width: 100%; \r\n    min-width: 150px;\r\n    \r\n    &:hover {\r\n      box-shadow: $shadow2;\r\n      -webkit-box-shadow:  $shadow2;\r\n    }\r\n    &:active {\r\n      -webkit-box-shadow: $shadow3;\r\n              box-shadow: $shadow3;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n      margin: 0px;\r\n      margin-right: 10px;\r\n      min-width: none;\r\n      max-width: none;\r\n      width: 50%;\r\n      -webkit-box-sizing: border-box;\r\n              box-sizing: border-box;\r\n      font-size: 10px;\r\n      height: 100%;\r\n    }\r\n  }\r\n\r\n  &__button {\r\n    width: 100%;\r\n    min-width: 150px;\r\n    background-color: $colorMain;\r\n    font-size: 25px;\r\n    font-weight: bold;\r\n    font-family: $font1;\r\n    @media (max-width: 600px) {\r\n      font-size: 10px;\r\n      height: 100%;\r\n    }\r\n    @media (max-width: 800px) {\r\n      min-width: none;\r\n      width: 50%;\r\n      height: 100%;\r\n\r\n      font-size: 11px;\r\n    }\r\n    cursor: pointer;\r\n    background-color: inherit;\r\n    border: none;\r\n    border-radius: $border1;\r\n    padding: 10px 30px 10px 30px;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    outline: none;\r\n    -webkit-transition: ease 0.1s;\r\n    -o-transition: ease 0.1s;\r\n    transition: ease 0.1s;\r\n    -webkit-box-shadow: $shadow1;\r\n            box-shadow: $shadow1;\r\n    &:hover {\r\n      -webkit-box-shadow: $shadow2;\r\n              box-shadow: $shadow2;\r\n    }\r\n    &:active {\r\n      -webkit-box-shadow: $shadow3;\r\n              box-shadow: $shadow3;\r\n    }\r\n  }\r\n\r\n  &__logout {\r\n    font-family: $font2;\r\n    margin-top: 20px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    font-size: 16px;\r\n    color: #000;\r\n    font-weight: bold;\r\n\r\n    &:hover {\r\n      color: $color1;\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13048,7 +13182,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".event-flag {\n  color: #000;\n  background-color: #a8dac2;\n  cursor: move;\n  cursor: grab;\n  cursor: -webkit-grab;\n  height: 100%;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  flex-direction: column;\n  -webkit-box-pack: start;\n  -ms-flex-pack: start;\n  justify-content: flex-start;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n}\n@media (max-width: 800px) {\n  .event-flag {\n    padding: 5px;\n  }\n}\n.event-flag:hover {\n  background-color: #9ad4ae;\n}\n.event-flag__name {\n  word-wrap: break-word;\n  box-sizing: border-box;\n  height: 100%;\n  margin: 2%;\n}\n.event-flag:active {\n  cursor: grabbing;\n  cursor: -webkit-grabbing;\n}\n.event-flag__button {\n  display: none;\n  align-self: flex-end;\n  margin: 0;\n  background-color: #da0808;\n  color: #B9CBC3;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  transition: ease 0.1s;\n  font-size: 10px;\n  width: 10%;\n  padding: 0;\n  min-width: 2em;\n}\n.event-flag__button:hover {\n  font-weight: bolder;\n  width: 100%;\n}\n@media (max-width: 800px) {\n  .event-flag__button {\n    font-size: 10px;\n    margin: 0px;\n    padding: 0px;\n    padding-left: 2px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/eventFlag/eventFlag.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,WAAA;EACA,yBAAA;EACA,YAAA;EACA,YAAA;EACA,oBAAA;EAEA,YAAA;EACA,WAAA;EACA,8BAAA;EACQ,sBAAA;EACR,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACI,oBAAA;EACI,2BAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;AADV;AAIE;EAvBF;IAwBI,YAAA;EADF;AACF;AAGE;EACE,yBAAA;AADJ;AAIE;EACE,qBAAA;EACA,sBAAA;EACA,YAAA;EACA,UAAA;AAFJ;AAKE;EACE,gBAAA;EACA,wBAAA;AAHJ;AAME;EACE,aAAA;EACA,oBAAA;EACA,SAAA;EACA,yBAAA;EACA,cChDK;EDiDL,YAAA;EACA,aAAA;EACA,eAAA;EACA,qBAAA;EACA,eAAA;EACA,UAAA;EACA,UAAA;EACA,cAAA;AAJJ;AAKI;EACE,mBAAA;EACA,WAAA;AAHN;AAMI;EAnBF;IAoBI,eAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EAHJ;AACF","sourcesContent":["@import \"../../styles/variables.scss\";\r\n\r\n.event-flag {\r\n  color: #000;\r\n  background-color: #a8dac2;\r\n  cursor: move;\r\n  cursor: grab;\r\n  cursor: -webkit-grab;\r\n\r\n  height: 100%;\r\n  width: 100%;\r\n  -webkit-box-sizing: border-box;\r\n          box-sizing: border-box;\r\n  display:-webkit-box;\r\n  display:-ms-flexbox;\r\n  display:flex;\r\n  flex-direction: column;\r\n  -webkit-box-pack: start;\r\n      -ms-flex-pack: start;\r\n          justify-content: flex-start;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n          // transition: ease 0.5s;\r\n\r\n  @media (max-width: 800px) {\r\n    padding: 5px;\r\n  }\r\n\r\n  &:hover {\r\n    background-color: #9ad4ae;\r\n  }\r\n\r\n  &__name {\r\n    word-wrap: break-word;\r\n    box-sizing: border-box;\r\n    height: 100%;\r\n    margin: 2%;\r\n  }\r\n\r\n  &:active {\r\n    cursor: grabbing;\r\n    cursor: -webkit-grabbing;\r\n  }\r\n\r\n  &__button {\r\n    display: none;\r\n    align-self: flex-end;\r\n    margin: 0;\r\n    background-color: rgb(218, 8, 8);\r\n    color: $color1;\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    transition: ease 0.1s;\r\n    font-size: 10px;\r\n    width: 10%;\r\n    padding: 0;\r\n    min-width: 2em;\r\n    &:hover {\r\n      font-weight: bolder;\r\n      width: 100%;\r\n    }\r\n\r\n    @media (max-width:800px) {\r\n      font-size: 10px;\r\n      margin: 0px;\r\n      padding: 0px;\r\n      padding-left: 2px;\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".event-flag {\n  color: #000;\n  background-color: #a8dac2;\n  cursor: move;\n  cursor: grab;\n  cursor: -webkit-grab;\n  height: 100%;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  -webkit-box-pack: start;\n  -ms-flex-pack: start;\n  justify-content: flex-start;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n}\n@media (max-width: 800px) {\n  .event-flag {\n    padding: 5px;\n  }\n}\n.event-flag:hover {\n  background-color: #9ad4ae;\n}\n.event-flag__name {\n  word-wrap: break-word;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  margin: 2%;\n}\n.event-flag:active {\n  cursor: grabbing;\n  cursor: -webkit-grabbing;\n}\n.event-flag__button {\n  display: none;\n  -ms-flex-item-align: end;\n  align-self: flex-end;\n  margin: 0;\n  background-color: #da0808;\n  color: #B9CBC3;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  font-size: 10px;\n  width: 10%;\n  padding: 0;\n  min-width: 2em;\n}\n.event-flag__button:hover {\n  font-weight: bolder;\n  width: 100%;\n}\n@media (max-width: 800px) {\n  .event-flag__button {\n    font-size: 10px;\n    margin: 0px;\n    padding: 0px;\n    padding-left: 2px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/eventFlag/eventFlag.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,WAAA;EACA,yBAAA;EACA,YAAA;EACA,YAAA;EACA,oBAAA;EAEA,YAAA;EACA,WAAA;EACA,8BAAA;EACQ,sBAAA;EACR,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,uBAAA;EACI,oBAAA;EACI,2BAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;AADV;AAGE;EAzBF;IA0BI,YAAA;EAAF;AACF;AAEE;EACE,yBAAA;AAAJ;AAGE;EACE,qBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,UAAA;AADJ;AAIE;EACE,gBAAA;EACA,wBAAA;AAFJ;AAKE;EACE,aAAA;EACA,wBAAA;EACI,oBAAA;EACJ,SAAA;EACA,yBAAA;EACA,cCnDK;EDoDL,YAAA;EACA,aAAA;EACA,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,eAAA;EACA,UAAA;EACA,UAAA;EACA,cAAA;AAHJ;AAII;EACE,mBAAA;EACA,WAAA;AAFN;AAKI;EAtBF;IAuBI,eAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EAFJ;AACF","sourcesContent":["@import \"../../styles/variables.scss\";\r\n\r\n.event-flag {\r\n  color: #000;\r\n  background-color: #a8dac2;\r\n  cursor: move;\r\n  cursor: grab;\r\n  cursor: -webkit-grab;\r\n\r\n  height: 100%;\r\n  width: 100%;\r\n  -webkit-box-sizing: border-box;\r\n          box-sizing: border-box;\r\n  display:-webkit-box;\r\n  display:-ms-flexbox;\r\n  display:flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-pack: start;\r\n      -ms-flex-pack: start;\r\n          justify-content: flex-start;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n\r\n  @media (max-width: 800px) {\r\n    padding: 5px;\r\n  }\r\n\r\n  &:hover {\r\n    background-color: #9ad4ae;\r\n  }\r\n\r\n  &__name {\r\n    word-wrap: break-word;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    margin: 2%;\r\n  }\r\n\r\n  &:active {\r\n    cursor: grabbing;\r\n    cursor: -webkit-grabbing;\r\n  }\r\n\r\n  &__button {\r\n    display: none;\r\n    -ms-flex-item-align: end;\r\n        align-self: flex-end;\r\n    margin: 0;\r\n    background-color: rgb(218, 8, 8);\r\n    color: $color1;\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    -webkit-transition: ease 0.1s;\r\n    -o-transition: ease 0.1s;\r\n    transition: ease 0.1s;\r\n    font-size: 10px;\r\n    width: 10%;\r\n    padding: 0;\r\n    min-width: 2em;\r\n    &:hover {\r\n      font-weight: bolder;\r\n      width: 100%;\r\n    }\r\n\r\n    @media (max-width:800px) {\r\n      font-size: 10px;\r\n      margin: 0px;\r\n      padding: 0px;\r\n      padding-left: 2px;\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13076,7 +13210,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.new-event-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  position: absolute;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #b0dfc9;\n}\n.new-event-container .error-message {\n  background-color: rgba(255, 93, 93, 0.5);\n  color: #fff;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-radius: 3px;\n  width: 500px;\n  height: 3em;\n  text-align: center;\n  line-height: 3em;\n  margin-bottom: 20px;\n}\n@media (max-width: 500px) {\n  .new-event-container .error-message {\n    width: 90vw;\n  }\n}\n.new-event-container .new-event {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  width: 500px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 40px;\n  background-color: #b0dfc9;\n  border-radius: 5px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: space-between;\n  -ms-flex-align: space-between;\n  align-items: space-between;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n@media (max-width: 500px) {\n  .new-event-container .new-event {\n    width: 90vw;\n  }\n}\n.new-event-container .new-event__item {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n  -ms-flex-pack: justify;\n  justify-content: space-between;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  min-height: 55px;\n  font-size: 15px;\n}\n@media (max-width: 500px) {\n  .new-event-container .new-event__item {\n    flex-direction: column;\n    align-items: flex-start;\n    margin-bottom: 10px;\n  }\n}\n.new-event-container .new-event__input {\n  font-size: 13px;\n  background-color: #b0dfc9;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  width: 75%;\n  height: 35px;\n  border-radius: 5px;\n  border: none;\n  padding-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  outline: none;\n}\n@media (max-width: 500px) {\n  .new-event-container .new-event__input {\n    width: 100%;\n    margin-top: 10px;\n  }\n}\n.new-event-container .new-event__input:hover {\n  -webkit-box-shadow: inset 3px 3px 3px #89a093;\n  box-shadow: inset 3px 3px 3px #89a093;\n}\n.new-event-container .new-event__input:focus {\n  -webkit-box-shadow: inset 3px 3px 3px #89a093;\n  box-shadow: inset 3px 3px 3px #89a093;\n}\n.new-event-container .new-event__button-wrapper {\n  margin-top: 20px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n  -ms-flex-pack: end;\n  justify-content: flex-end;\n  width: 100%;\n}\n.new-event-container .new-event__button {\n  border-radius: 5px;\n  border: none;\n  outline: none;\n  background-color: #b0dfc9;\n  margin-bottom: 10px;\n  width: 30%;\n  height: 30px;\n  margin-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.5s;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n.new-event-container .new-event__button:hover {\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.new-event-container .new-event__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}", "",{"version":3,"sources":["webpack://./components/newEvent/newEvent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,0BAAA;EACI,qBAAA;EACJ,OAAA;EACA,MAAA;EACA,WAAA;EACA,YAAA;EACA,yBCxBU;ADuBZ;AAGE;EACE,wCAAA;EACA,WAAA;EACA,sDCtBM;EDwBN,kBAAA;EAEA,YAAA;EAIA,WAAA;EACA,kBAAA;EACA,gBAAA;EACA,mBAAA;AANJ;AAAI;EARF;IASI,WAAA;EAGJ;AACF;AAKE;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,YAAA;EAIA,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,yBC3DQ;ED4DR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,gCAAA;EACI,6BAAA;EACI,0BAAA;EACR,8DC5DM;ED6DE,sDC7DF;ADuDV;AATI;EATF;IAUI,WAAA;EAYJ;AACF;AAII;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EAOA,yBAAA;EACI,sBAAA;EACI,8BAAA;EACR,0BAAA;EACI,qBAAA;EACJ,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,gBAAA;EACA,eAAA;AARN;AANM;EALF;IAMI,sBAAA;IACA,uBAAA;IACA,mBAAA;EASN;AACF;AAII;EACI,eAAA;EACA,yBC/FI;EDgGJ,sDCzFE;ED0FF,6CCxFE;EDyFF,UAAA;EAKA,YAAA;EACA,kBAAA;EACA,YAAA;EACA,kBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,aAAA;AANR;AAJQ;EANJ;IAOM,WAAA;IACA,gBAAA;EAOR;AACF;AACQ;EACE,6CCrGA;EDsGA,qCCtGA;ADuGV;AACQ;EACE,6CCzGA;ED0GA,qCC1GA;AD2GV;AAGI;EACE,gBAAA;EACA,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,qBAAA;EACI,kBAAA;EACI,yBAAA;EACR,WAAA;AADN;AAII;EACE,kBAAA;EACA,YAAA;EACA,aAAA;EACA,yBCvIM;EDwIN,mBAAA;EACA,UAAA;EACA,YAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,sDC3II;ED4IJ,8DC5II;AD0IV;AAGM;EACE,sDC7IE;ED8IF,8DC9IE;AD6IV;AAGM;EACE,6CChJE;EDiJM,qCCjJN;ADgJV","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.new-event-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n  position: absolute;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n  -ms-flex-line-pack: center;\r\n      align-content: center;\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: $colorMain;\r\n\r\n  .error-message {\r\n    background-color: rgba(255, 93, 93, 0.5);\r\n    color: #fff;\r\n    box-shadow: $shadow1;\r\n    // border: 2px solid rgb(255, 93, 93);\r\n    border-radius: 3px;\r\n    \r\n    width: 500px;\r\n    @media (max-width: 500px) {\r\n      width: 90vw;\r\n    }\r\n    height: 3em;\r\n    text-align: center;\r\n    line-height: 3em;\r\n    margin-bottom: 20px;\r\n  }\r\n    \r\n\r\n  .new-event {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    width: 500px;\r\n    @media (max-width: 500px) {\r\n      width: 90vw;\r\n    }\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    padding: 40px;\r\n    background-color: $colorMain;\r\n    border-radius: 5px;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: space-between;\r\n        -ms-flex-align: space-between;\r\n            align-items: space-between;\r\n    -webkit-box-shadow: $shadow1;\r\n            box-shadow: $shadow1;\r\n\r\n    \r\n    &__item {\r\n      display: -webkit-box;\r\n      display: -ms-flexbox;\r\n      display: flex;\r\n\r\n      @media (max-width: 500px) {\r\n        flex-direction: column;\r\n        align-items: flex-start;\r\n        margin-bottom: 10px;    \r\n      }\r\n      -webkit-box-pack: justify;\r\n          -ms-flex-pack: justify;\r\n              justify-content: space-between;\r\n      -ms-flex-line-pack: center;\r\n          align-content: center;\r\n      -webkit-box-align: center;\r\n          -ms-flex-align: center;\r\n              align-items: center;\r\n      min-height: 55px;\r\n      font-size: 15px;\r\n    }\r\n\r\n    &__input {\r\n        font-size: 13px;\r\n        background-color: $colorMain;\r\n        box-shadow: $shadow1;\r\n        -webkit-box-shadow:  $shadow3;\r\n        width: 75%;\r\n        @media (max-width: 500px) {\r\n          width: 100%;\r\n          margin-top: 10px;  \r\n        }\r\n        height: 35px;\r\n        border-radius: 5px;\r\n        border: none; \r\n        padding-left: 10px;\r\n        -webkit-box-sizing: border-box;\r\n                box-sizing: border-box;\r\n        outline: none;\r\n        &:hover {\r\n          -webkit-box-shadow: $shadow4;\r\n          box-shadow: $shadow4;\r\n        }\r\n        &:focus {\r\n          -webkit-box-shadow: $shadow4;\r\n          box-shadow: $shadow4;\r\n        }\r\n    }\r\n\r\n    &__button-wrapper {\r\n      margin-top: 20px;\r\n      display: -webkit-box;\r\n      display: -ms-flexbox;\r\n      display: flex;\r\n      -webkit-box-pack: end;\r\n          -ms-flex-pack: end;\r\n              justify-content: flex-end;\r\n      width: 100%;\r\n    }\r\n\r\n    &__button {\r\n      border-radius: 5px;\r\n      border: none;\r\n      outline: none;\r\n      background-color: $colorMain;\r\n      margin-bottom: 10px;\r\n      width: 30%;\r\n      height: 30px;\r\n      margin-left: 10px;\r\n      -webkit-box-sizing: border-box;\r\n              box-sizing: border-box;\r\n      cursor: pointer;\r\n      -webkit-transition: ease 0.1s;\r\n      -o-transition: ease 0.1s;\r\n      transition: ease 0.5s;\r\n      box-shadow: $shadow1;\r\n      -webkit-box-shadow:  $shadow1;\r\n      &:hover {\r\n        box-shadow: $shadow2;\r\n        -webkit-box-shadow:  $shadow2;\r\n      }\r\n      &:active {\r\n        -webkit-box-shadow: $shadow3;\r\n                box-shadow: $shadow3;\r\n      }\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".new-event-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  position: absolute;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #b0dfc9;\n}\n.new-event-container .error-message {\n  background-color: rgba(255, 93, 93, 0.5);\n  color: #fff;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-radius: 3px;\n  width: 500px;\n  height: 3em;\n  text-align: center;\n  line-height: 3em;\n  margin-bottom: 20px;\n}\n@media (max-width: 500px) {\n  .new-event-container .error-message {\n    width: 90vw;\n  }\n}\n.new-event-container .new-event {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  width: 500px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 40px;\n  background-color: #b0dfc9;\n  border-radius: 5px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: space-between;\n  -ms-flex-align: space-between;\n  align-items: space-between;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n@media (max-width: 500px) {\n  .new-event-container .new-event {\n    width: 90vw;\n  }\n}\n.new-event-container .new-event__item {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n  -ms-flex-pack: justify;\n  justify-content: space-between;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  min-height: 55px;\n  font-size: 15px;\n}\n@media (max-width: 500px) {\n  .new-event-container .new-event__item {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n    -ms-flex-direction: column;\n    flex-direction: column;\n    -webkit-box-align: start;\n    -ms-flex-align: start;\n    align-items: flex-start;\n    margin-bottom: 10px;\n  }\n}\n.new-event-container .new-event__input {\n  font-size: 13px;\n  background-color: #b0dfc9;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  width: 75%;\n  height: 35px;\n  border-radius: 5px;\n  border: none;\n  padding-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  outline: none;\n}\n@media (max-width: 500px) {\n  .new-event-container .new-event__input {\n    width: 100%;\n    margin-top: 10px;\n  }\n}\n.new-event-container .new-event__input:hover {\n  -webkit-box-shadow: inset 3px 3px 3px #89a093;\n  box-shadow: inset 3px 3px 3px #89a093;\n}\n.new-event-container .new-event__input:focus {\n  -webkit-box-shadow: inset 3px 3px 3px #89a093;\n  box-shadow: inset 3px 3px 3px #89a093;\n}\n.new-event-container .new-event__button-wrapper {\n  margin-top: 20px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n  -ms-flex-pack: end;\n  justify-content: flex-end;\n  width: 100%;\n}\n.new-event-container .new-event__button {\n  border-radius: 5px;\n  border: none;\n  outline: none;\n  background-color: #b0dfc9;\n  margin-bottom: 10px;\n  width: 30%;\n  height: 30px;\n  margin-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  -webkit-transition: ease 0.5s;\n  -o-transition: ease 0.5s;\n  transition: ease 0.5s;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n.new-event-container .new-event__button:hover {\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.new-event-container .new-event__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}", "",{"version":3,"sources":["webpack://./components/newEvent/newEvent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,0BAAA;EACI,qBAAA;EACJ,OAAA;EACA,MAAA;EACA,WAAA;EACA,YAAA;EACA,yBCjBU;ADiBZ;AAEE;EACE,wCAAA;EACA,WAAA;EACA,8DCfM;EDgBE,sDChBF;EDiBN,kBAAA;EAEA,YAAA;EAIA,WAAA;EACA,kBAAA;EACA,gBAAA;EACA,mBAAA;AAJJ;AAFI;EARF;IASI,WAAA;EAKJ;AACF;AAGE;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,YAAA;EAIA,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,yBCpDQ;EDqDR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,gCAAA;EACI,6BAAA;EACI,0BAAA;EACR,8DCrDM;EDsDE,sDCtDF;ADkDV;AAXI;EATF;IAUI,WAAA;EAcJ;AACF;AAEI;EACE,oBAAA;EACA,oBAAA;EACA,aAAA;EAYA,yBAAA;EACI,sBAAA;EACI,8BAAA;EACR,0BAAA;EACI,qBAAA;EACJ,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,gBAAA;EACA,eAAA;AAXN;AARM;EALF;IAMI,4BAAA;IACA,6BAAA;IACI,0BAAA;IACI,sBAAA;IACR,wBAAA;IACI,qBAAA;IACI,uBAAA;IACR,mBAAA;EAWN;AACF;AAEI;EACI,eAAA;EACA,yBC7FI;ED8FJ,sDCvFE;EDwFF,6CCtFE;EDuFF,UAAA;EAKA,YAAA;EACA,kBAAA;EACA,YAAA;EACA,kBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,aAAA;AAJR;AANQ;EANJ;IAOM,WAAA;IACA,gBAAA;EASR;AACF;AADQ;EACE,6CCnGA;EDoGA,qCCpGA;ADuGV;AADQ;EACE,6CCvGA;EDwGA,qCCxGA;AD2GV;AACI;EACE,gBAAA;EACA,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,qBAAA;EACI,kBAAA;EACI,yBAAA;EACR,WAAA;AACN;AAEI;EACE,kBAAA;EACA,YAAA;EACA,aAAA;EACA,yBCrIM;EDsIN,mBAAA;EACA,UAAA;EACA,YAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,sDC3II;ED4IJ,8DC5II;AD4IV;AACM;EACE,sDC7IE;ED8IF,8DC9IE;AD+IV;AACM;EACE,6CChJE;EDiJM,qCCjJN;ADkJV","sourcesContent":["@import '/styles/variables.scss';\r\n\r\n.new-event-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n  position: absolute;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n  -ms-flex-line-pack: center;\r\n      align-content: center;\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: $colorMain;\r\n\r\n  .error-message {\r\n    background-color: rgba(255, 93, 93, 0.5);\r\n    color: #fff;\r\n    -webkit-box-shadow: $shadow1;\r\n            box-shadow: $shadow1;\r\n    border-radius: 3px;\r\n    \r\n    width: 500px;\r\n    @media (max-width: 500px) {\r\n      width: 90vw;\r\n    }\r\n    height: 3em;\r\n    text-align: center;\r\n    line-height: 3em;\r\n    margin-bottom: 20px;\r\n  }\r\n    \r\n\r\n  .new-event {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    width: 500px;\r\n    @media (max-width: 500px) {\r\n      width: 90vw;\r\n    }\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    padding: 40px;\r\n    background-color: $colorMain;\r\n    border-radius: 5px;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: space-between;\r\n        -ms-flex-align: space-between;\r\n            align-items: space-between;\r\n    -webkit-box-shadow: $shadow1;\r\n            box-shadow: $shadow1;\r\n\r\n    \r\n    &__item {\r\n      display: -webkit-box;\r\n      display: -ms-flexbox;\r\n      display: flex;\r\n\r\n      @media (max-width: 500px) {\r\n        -webkit-box-orient: vertical;\r\n        -webkit-box-direction: normal;\r\n            -ms-flex-direction: column;\r\n                flex-direction: column;\r\n        -webkit-box-align: start;\r\n            -ms-flex-align: start;\r\n                align-items: flex-start;\r\n        margin-bottom: 10px;    \r\n      }\r\n      -webkit-box-pack: justify;\r\n          -ms-flex-pack: justify;\r\n              justify-content: space-between;\r\n      -ms-flex-line-pack: center;\r\n          align-content: center;\r\n      -webkit-box-align: center;\r\n          -ms-flex-align: center;\r\n              align-items: center;\r\n      min-height: 55px;\r\n      font-size: 15px;\r\n    }\r\n\r\n    &__input {\r\n        font-size: 13px;\r\n        background-color: $colorMain;\r\n        box-shadow: $shadow1;\r\n        -webkit-box-shadow:  $shadow3;\r\n        width: 75%;\r\n        @media (max-width: 500px) {\r\n          width: 100%;\r\n          margin-top: 10px;  \r\n        }\r\n        height: 35px;\r\n        border-radius: 5px;\r\n        border: none; \r\n        padding-left: 10px;\r\n        -webkit-box-sizing: border-box;\r\n                box-sizing: border-box;\r\n        outline: none;\r\n        &:hover {\r\n          -webkit-box-shadow: $shadow4;\r\n          box-shadow: $shadow4;\r\n        }\r\n        &:focus {\r\n          -webkit-box-shadow: $shadow4;\r\n          box-shadow: $shadow4;\r\n        }\r\n    }\r\n\r\n    &__button-wrapper {\r\n      margin-top: 20px;\r\n      display: -webkit-box;\r\n      display: -ms-flexbox;\r\n      display: flex;\r\n      -webkit-box-pack: end;\r\n          -ms-flex-pack: end;\r\n              justify-content: flex-end;\r\n      width: 100%;\r\n    }\r\n\r\n    &__button {\r\n      border-radius: 5px;\r\n      border: none;\r\n      outline: none;\r\n      background-color: $colorMain;\r\n      margin-bottom: 10px;\r\n      width: 30%;\r\n      height: 30px;\r\n      margin-left: 10px;\r\n      -webkit-box-sizing: border-box;\r\n              box-sizing: border-box;\r\n      cursor: pointer;\r\n      -webkit-transition: ease 0.1s;\r\n      -o-transition: ease 0.1s;\r\n      -webkit-transition: ease 0.5s;\r\n      -o-transition: ease 0.5s;\r\n      transition: ease 0.5s;\r\n      box-shadow: $shadow1;\r\n      -webkit-box-shadow:  $shadow1;\r\n      &:hover {\r\n        box-shadow: $shadow2;\r\n        -webkit-box-shadow:  $shadow2;\r\n      }\r\n      &:active {\r\n        -webkit-box-shadow: $shadow3;\r\n                box-shadow: $shadow3;\r\n      }\r\n    }\r\n  }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13104,7 +13238,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.remove-event-wrapper {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  position: absolute;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #b0dfc9;\n}\n.remove-event-wrapper .remove-event {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  max-width: 500px;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 20px;\n  background-color: #b0dfc9;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-radius: 5px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: space-between;\n  -ms-flex-align: space-between;\n  align-items: space-between;\n}\n.remove-event-wrapper .remove-event__title {\n  word-wrap: break-word;\n}\n.remove-event-wrapper .remove-event__title span {\n  font-weight: bold;\n}\n.remove-event-wrapper .remove-event__buttons {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n  -ms-flex-pack: end;\n  justify-content: flex-end;\n  width: 100%;\n}\n.remove-event-wrapper .remove-event__button {\n  border-radius: 5px;\n  border: none;\n  outline: none;\n  background-color: #b0dfc9;\n  margin-bottom: 10px;\n  width: 30%;\n  height: 30px;\n  margin-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n.remove-event-wrapper .remove-event__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.remove-event-wrapper .remove-event__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}", "",{"version":3,"sources":["webpack://./components/removeEvent/removeEvent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,0BAAA;EACI,qBAAA;EACJ,OAAA;EACA,MAAA;EACA,WAAA;EACA,YAAA;EACA,yBCxBQ;ADuBZ;AAGI;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,gBAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,yBCtCI;EDuCJ,8DChCE;EDiCM,sDCjCN;EDkCF,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,gCAAA;EACI,6BAAA;EACI,0BAAA;AADhB;AAGQ;EACI,qBAAA;AADZ;AAGY;EACI,iBAAA;AADhB;AAKQ;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,qBAAA;EACI,kBAAA;EACI,yBAAA;EACR,WAAA;AAHZ;AAMQ;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,yBCvEA;EDwEA,mBAAA;EACA,UAAA;EACA,YAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DC3EF;ED4EU,sDC5EV;ADwEV;AAKY;EACE,8DC7EJ;ED8EY,sDC9EZ;AD2EV;AAKY;EACE,6CChFJ;EDiFY,qCCjFZ;AD8EV","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.remove-event-wrapper {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    position: absolute;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: $colorMain;\r\n\r\n    .remove-event {\r\n        display: -webkit-box;\r\n        display: -ms-flexbox;\r\n        display: flex;\r\n        max-width: 500px;\r\n        -webkit-box-orient: vertical;\r\n        -webkit-box-direction: normal;\r\n            -ms-flex-direction: column;\r\n                flex-direction: column;\r\n        -webkit-box-sizing: border-box;\r\n                box-sizing: border-box;\r\n        padding: 20px;\r\n        background-color: $colorMain;\r\n        -webkit-box-shadow: $shadow1;\r\n                box-shadow: $shadow1;\r\n        border-radius: 5px;\r\n        -webkit-box-pack: center;\r\n            -ms-flex-pack: center;\r\n                justify-content: center;\r\n        -webkit-box-align: space-between;\r\n            -ms-flex-align: space-between;\r\n                align-items: space-between;\r\n\r\n        &__title {\r\n            word-wrap: break-word;\r\n\r\n            span {\r\n                font-weight: bold;\r\n            }\r\n        }\r\n\r\n        &__buttons {\r\n            display: -webkit-box;\r\n            display: -ms-flexbox;\r\n            display: flex;\r\n            -webkit-box-pack: end;\r\n                -ms-flex-pack: end;\r\n                    justify-content: flex-end;\r\n            width: 100%;\r\n        }\r\n\r\n        &__button {\r\n            border-radius: 5px;\r\n            border: none;\r\n            outline: none;\r\n            background-color: $colorMain;\r\n            margin-bottom: 10px;\r\n            width: 30%;\r\n            height: 30px;\r\n            margin-left: 10px;\r\n            -webkit-box-sizing: border-box;\r\n                    box-sizing: border-box;\r\n            cursor: pointer;\r\n            -webkit-transition: ease 0.1s;\r\n            -o-transition: ease 0.1s;\r\n            transition: ease 0.1s;\r\n            -webkit-box-shadow: $shadow1;\r\n                    box-shadow: $shadow1;\r\n            &:hover {\r\n              -webkit-box-shadow: $shadow2;\r\n                      box-shadow: $shadow2;\r\n            }\r\n            &:active {\r\n              -webkit-box-shadow:  $shadow3;\r\n                      box-shadow:  $shadow3;\r\n            }\r\n        }\r\n    }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*\n* Prefixed by https://autoprefixer.github.io\n* PostCSS: v7.0.29,\n* Autoprefixer: v9.7.6\n* Browsers: last 4 version\n*/\n.remove-event-wrapper {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  position: absolute;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -ms-flex-line-pack: center;\n  align-content: center;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #b0dfc9;\n}\n.remove-event-wrapper .remove-event {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  max-width: 500px;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 20px;\n  background-color: #b0dfc9;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  border-radius: 5px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: space-between;\n  -ms-flex-align: space-between;\n  align-items: space-between;\n}\n.remove-event-wrapper .remove-event__title {\n  word-wrap: break-word;\n}\n.remove-event-wrapper .remove-event__buttons {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n  -ms-flex-pack: end;\n  justify-content: flex-end;\n  width: 100%;\n}\n.remove-event-wrapper .remove-event__button {\n  border-radius: 5px;\n  border: none;\n  outline: none;\n  background-color: #b0dfc9;\n  margin-bottom: 10px;\n  width: 30%;\n  height: 30px;\n  margin-left: 10px;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  cursor: pointer;\n  -webkit-transition: ease 0.1s;\n  -o-transition: ease 0.1s;\n  transition: ease 0.1s;\n  -webkit-box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n  box-shadow: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\n}\n.remove-event-wrapper .remove-event__button:hover {\n  -webkit-box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n  box-shadow: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\n}\n.remove-event-wrapper .remove-event__button:active {\n  -webkit-box-shadow: inset 2px 2px 3px #94b3a2;\n  box-shadow: inset 2px 2px 3px #94b3a2;\n}", "",{"version":3,"sources":["webpack://./components/removeEvent/removeEvent.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAAA;;;;;CAAA;AASA;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,yBAAA;EACI,sBAAA;EACI,mBAAA;EACR,0BAAA;EACI,qBAAA;EACJ,OAAA;EACA,MAAA;EACA,WAAA;EACA,YAAA;EACA,yBCxBQ;ADuBZ;AAGI;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,gBAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,8BAAA;EACQ,sBAAA;EACR,aAAA;EACA,yBCtCI;EDuCJ,8DChCE;EDiCM,sDCjCN;EDkCF,kBAAA;EACA,wBAAA;EACI,qBAAA;EACI,uBAAA;EACR,gCAAA;EACI,6BAAA;EACI,0BAAA;AADhB;AAGQ;EACI,qBAAA;AADZ;AAIQ;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,qBAAA;EACI,kBAAA;EACI,yBAAA;EACR,WAAA;AAFZ;AAKQ;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,yBCnEA;EDoEA,mBAAA;EACA,UAAA;EACA,YAAA;EACA,iBAAA;EACA,8BAAA;EACQ,sBAAA;EACR,eAAA;EACA,6BAAA;EACA,wBAAA;EACA,qBAAA;EACA,8DCvEF;EDwEU,sDCxEV;ADqEV;AAIY;EACE,8DCzEJ;ED0EY,sDC1EZ;ADwEV;AAIY;EACE,6CC5EJ;ED6EY,qCC7EZ;AD2EV","sourcesContent":["/*\r\n* Prefixed by https://autoprefixer.github.io\r\n* PostCSS: v7.0.29,\r\n* Autoprefixer: v9.7.6\r\n* Browsers: last 4 version\r\n*/\r\n\r\n@import '/styles/variables.scss';\r\n\r\n.remove-event-wrapper {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    position: absolute;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: $colorMain;\r\n\r\n    .remove-event {\r\n        display: -webkit-box;\r\n        display: -ms-flexbox;\r\n        display: flex;\r\n        max-width: 500px;\r\n        -webkit-box-orient: vertical;\r\n        -webkit-box-direction: normal;\r\n            -ms-flex-direction: column;\r\n                flex-direction: column;\r\n        -webkit-box-sizing: border-box;\r\n                box-sizing: border-box;\r\n        padding: 20px;\r\n        background-color: $colorMain;\r\n        -webkit-box-shadow: $shadow1;\r\n                box-shadow: $shadow1;\r\n        border-radius: 5px;\r\n        -webkit-box-pack: center;\r\n            -ms-flex-pack: center;\r\n                justify-content: center;\r\n        -webkit-box-align: space-between;\r\n            -ms-flex-align: space-between;\r\n                align-items: space-between;\r\n\r\n        &__title {\r\n            word-wrap: break-word;\r\n        }\r\n\r\n        &__buttons {\r\n            display: -webkit-box;\r\n            display: -ms-flexbox;\r\n            display: flex;\r\n            -webkit-box-pack: end;\r\n                -ms-flex-pack: end;\r\n                    justify-content: flex-end;\r\n            width: 100%;\r\n        }\r\n\r\n        &__button {\r\n            border-radius: 5px;\r\n            border: none;\r\n            outline: none;\r\n            background-color: $colorMain;\r\n            margin-bottom: 10px;\r\n            width: 30%;\r\n            height: 30px;\r\n            margin-left: 10px;\r\n            -webkit-box-sizing: border-box;\r\n                    box-sizing: border-box;\r\n            cursor: pointer;\r\n            -webkit-transition: ease 0.1s;\r\n            -o-transition: ease 0.1s;\r\n            transition: ease 0.1s;\r\n            -webkit-box-shadow: $shadow1;\r\n                    box-shadow: $shadow1;\r\n            &:hover {\r\n              -webkit-box-shadow: $shadow2;\r\n                      box-shadow: $shadow2;\r\n            }\r\n            &:active {\r\n              -webkit-box-shadow:  $shadow3;\r\n                      box-shadow:  $shadow3;\r\n            }\r\n        }\r\n    }\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13145,6 +13279,62 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".select-multiply {\n  z-index: 1;\n  p
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/tableCell/tableCell.scss":
+/*!**************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/tableCell/tableCell.scss ***!
+  \**************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".table-cell {\n  width: 100%;\n  height: 100%;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  overflow: hidden;\n  border-top: 2px solid rgba(166, 211, 190, 0.5);\n  border-left: 2px solid rgba(166, 211, 190, 0.5);\n  font-size: 12px;\n}\n@media (max-width: 400px) {\n  .table-cell {\n    font-size: 8px;\n  }\n}", "",{"version":3,"sources":["webpack://./components/tableCell/tableCell.scss"],"names":[],"mappings":"AAEA;EACI,WAAA;EACA,YAAA;EACA,8BAAA;EACQ,sBAAA;EAER,gBAAA;EAEA,8CAAA;EACA,+CAAA;EAEA,eAAA;AAHJ;AAKI;EAbJ;IAcM,cAAA;EAFJ;AACF","sourcesContent":["@import \"../../styles/variables.scss\";\r\n\r\n.table-cell {\r\n    width: 100%;\r\n    height: 100%;\r\n    -webkit-box-sizing: border-box;\r\n            box-sizing: border-box;\r\n    \r\n    overflow: hidden;\r\n\r\n    border-top: 2px solid rgba(166, 211, 190, 0.5);    \r\n    border-left: 2px solid rgba(166, 211, 190, 0.5);\r\n    \r\n    font-size: 12px;\r\n    \r\n    @media (max-width: 400px) {\r\n      font-size: 8px;\r\n    }\r\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/tableColumn/tableColumn.scss":
+/*!******************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/tableColumn/tableColumn.scss ***!
+  \******************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".table-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -ms-flex-direction: column;\n  flex-direction: column;\n  height: 100%;\n  width: 100%;\n  -webkit-box-pack: justify;\n  -ms-flex-pack: justify;\n  justify-content: space-between;\n  overflow: hidden;\n}", "",{"version":3,"sources":["webpack://./components/tableColumn/tableColumn.scss"],"names":[],"mappings":"AAEA;EACI,oBAAA;EACA,oBAAA;EACA,aAAA;EACA,4BAAA;EACA,6BAAA;EACI,0BAAA;EACI,sBAAA;EACR,YAAA;EACA,WAAA;EACA,yBAAA;EACI,sBAAA;EACI,8BAAA;EACR,gBAAA;AAAJ","sourcesContent":["@import \"../../styles/variables.scss\";\r\n\r\n.table-column {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    height: 100%;\r\n    width: 100%;\r\n    -webkit-box-pack: justify;\r\n        -ms-flex-pack: justify;\r\n            justify-content: space-between;\r\n    overflow: hidden;\r\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./styles/main.scss":
 /*!*******************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./styles/main.scss ***!
@@ -13166,7 +13356,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#main {\n  width: 70vw;\n  height: 100%;\n  margin: auto;\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  box-sizing: border-box;\n}\n@media (max-width: 1100px) {\n  #main {\n    width: 95%;\n  }\n}\n@media (max-width: 800px) {\n  #main {\n    flex-direction: column;\n    margin-top: 20px;\n  }\n}\n\nbody {\n  height: 90vh;\n  margin: 0;\n  padding: 1%;\n  box-sizing: border-box;\n  background-color: #b0dfc9;\n}", "",{"version":3,"sources":["webpack://./styles/main.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACI,WAAA;EACA,YAAA;EACA,YAAA;EACA,iCCKI;EDJJ,aAAA;EACA,sBAAA;AAAJ;AAEI;EARJ;IASQ,UAAA;EACN;AACF;AACI;EAZJ;IAaQ,sBAAA;IACA,gBAAA;EAEN;AACF;;AACA;EACI,YAAA;EACA,SAAA;EACA,WAAA;EACA,sBAAA;EACA,yBCnBQ;ADqBZ","sourcesContent":["@import './variables.scss';\r\n\r\n#main {\r\n    width: 70vw;\r\n    height: 100%;\r\n    margin: auto;\r\n    font-family: $font2;\r\n    display: flex;\r\n    box-sizing: border-box;\r\n\r\n    @media (max-width: 1100px) {\r\n        width: 95%;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n        flex-direction: column;\r\n        margin-top: 20px;\r\n    }\r\n}\r\n\r\nbody {\r\n    height: 90vh;\r\n    margin: 0;\r\n    padding: 1%;\r\n    box-sizing: border-box; \r\n    background-color: $colorMain;\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#main {\n  width: 70vw;\n  height: 100%;\n  margin: auto;\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  box-sizing: border-box;\n}\n@media (max-width: 1100px) {\n  #main {\n    width: 95%;\n  }\n}\n@media (max-width: 800px) {\n  #main {\n    flex-direction: column;\n    margin-top: 20px;\n  }\n}\n\nbody {\n  height: 90vh;\n  padding: 1%;\n  box-sizing: border-box;\n  background-color: #b0dfc9;\n}", "",{"version":3,"sources":["webpack://./styles/main.scss","webpack://./styles/variables.scss"],"names":[],"mappings":"AAEA;EACI,WAAA;EACA,YAAA;EACA,YAAA;EACA,iCCKI;EDJJ,aAAA;EACA,sBAAA;AAAJ;AAEI;EARJ;IASQ,UAAA;EACN;AACF;AACI;EAZJ;IAaQ,sBAAA;IACA,gBAAA;EAEN;AACF;;AACA;EACI,YAAA;EACA,WAAA;EACA,sBAAA;EACA,yBClBQ;ADoBZ","sourcesContent":["@import './variables.scss';\r\n\r\n#main {\r\n    width: 70vw;\r\n    height: 100%;\r\n    margin: auto;\r\n    font-family: $font2;\r\n    display: flex;\r\n    box-sizing: border-box;\r\n\r\n    @media (max-width: 1100px) {\r\n        width: 95%;\r\n    }\r\n\r\n    @media (max-width: 800px) {\r\n        flex-direction: column;\r\n        margin-top: 20px;\r\n    }\r\n}\r\n\r\nbody {\r\n    height: 90vh;\r\n    padding: 1%;\r\n    box-sizing: border-box; \r\n    background-color: $colorMain;\r\n}","@import url('https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap');\r\n\r\n$color1: #B9CBC3;\r\n$color2: #a4d4be;\r\n$color3: #96bb7c;\r\n\r\n$colorMain: #b0dfc9;\r\n\r\n\r\n\r\n$font1: 'Lora', serif;\r\n$font2: 'Roboto', sans-serif;\r\n\r\n$shadow1: 3px 3px 5px #c3f1dc, -1px -1px 5px #a3ceba;\r\n$shadow2: 3px 3px 5px #c8f1df, -1px -1px 5px #7fa091;\r\n$shadow3: inset 2px 2px 3px #94b3a2;\r\n$shadow4: inset 3px 3px 3px #89a093;\r\n\r\n\r\n$border1: 30px;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13665,6 +13855,66 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_selectComponent_scss__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./components/tableCell/tableCell.scss":
+/*!*********************************************!*\
+  !*** ./components/tableCell/tableCell.scss ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_tableCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./tableCell.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/tableCell/tableCell.scss");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_tableCell_scss__WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_tableCell_scss__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./components/tableColumn/tableColumn.scss":
+/*!*************************************************!*\
+  !*** ./components/tableColumn/tableColumn.scss ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_tableColumn_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./tableColumn.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./components/tableColumn/tableColumn.scss");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_tableColumn_scss__WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_tableColumn_scss__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
 
 /***/ }),
 
