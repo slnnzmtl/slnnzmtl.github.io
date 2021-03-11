@@ -2188,11 +2188,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var Store = /*#__PURE__*/function () {
   function Store() {
+    var _this = this;
+
     _classCallCheck(this, Store);
 
     this.state = {};
+    (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.subscribe)("login", function () {
+      _this.getCurrentUser();
+    });
   }
 
   _createClass(Store, [{
@@ -2228,10 +2234,10 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "pushEvent",
     value: function pushEvent(data) {
-      var _this = this;
+      var _this2 = this;
 
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
-        _this.state.events.push(data);
+        _this2.state.events.push(data);
 
         (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
       });
@@ -2239,18 +2245,18 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "deleteEvent",
     value: function deleteEvent(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       return _api_events__WEBPACK_IMPORTED_MODULE_0__.default.delete(id).then(function () {
         var target;
 
-        _this2.state.events.forEach(function (item, index) {
+        _this3.state.events.forEach(function (item, index) {
           if (item.id === id) {
             target = index;
           }
         });
 
-        _this2.state.events.splice(target, target);
+        _this3.state.events.splice(target, target);
 
         (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
       });
@@ -2301,10 +2307,10 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "pushUser",
     value: function pushUser(data) {
-      var _this3 = this;
+      var _this4 = this;
 
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
-        _this3.state.users.push(data);
+        _this4.state.users.push(data);
 
         (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshUsers");
       })["catch"](function (error) {
@@ -2320,13 +2326,33 @@ var Store = /*#__PURE__*/function () {
     key: "getCurrentUser",
     value: function () {
       var _getCurrentUser = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var cookies;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                this.state.currentUser = JSON.parse(_cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser"));
+                cookies = _cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser");
+                _context3.next = 3;
+                return cookies;
 
-              case 1:
+              case 3:
+                if (!_context3.sent) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                _context3.t0 = JSON.parse(cookies);
+                _context3.next = 8;
+                break;
+
+              case 7:
+                _context3.t0 = {};
+
+              case 8:
+                this.state.currentUser = _context3.t0;
+                console.log(this.state.currentUser);
+
+              case 10:
               case "end":
                 return _context3.stop();
             }
