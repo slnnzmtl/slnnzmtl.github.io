@@ -10,26 +10,9 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "participants": () => (/* binding */ participants),
 /* harmony export */   "workingDays": () => (/* binding */ workingDays),
 /* harmony export */   "workingHours": () => (/* binding */ workingHours)
 /* harmony export */ });
-var participants = [{
-  name: "John (Admin)",
-  isAdmin: true
-}, {
-  name: "Robbert",
-  isAdmin: false
-}, {
-  name: "Eddard",
-  isAdmin: false
-}, {
-  name: "Jaime",
-  isAdmin: false
-}, {
-  name: "Cersei",
-  isAdmin: false
-}];
 var workingDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 var workingHours = [10, 11, 12, 13, 14, 15, 16, 17, 18];
 
@@ -114,7 +97,6 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
       var _this2 = this;
 
       this.data.participants = _utils_store__WEBPACK_IMPORTED_MODULE_4__.default.users;
-      this.fillUsers(this.select, this.data.participants);
       this.appendChild(_utils_ComponentsHelper__WEBPACK_IMPORTED_MODULE_1__.default.parseElement(_authComponent_html__WEBPACK_IMPORTED_MODULE_0__.default));
       this.classList.add("auth-wrapper");
       this.select = this.querySelector(".auth__select");
@@ -123,6 +105,8 @@ var Auth = /*#__PURE__*/function (_HTMLElement) {
       this.button.onclick = function () {
         return _this2.confirm(_this2.select.value);
       };
+
+      this.fillUsers(this.select, this.data.participants);
     }
   }, {
     key: "fillUsers",
@@ -168,12 +152,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ calendarComponent)
 /* harmony export */ });
 /* harmony import */ var _calendarComponent_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./calendarComponent.scss */ "./components/calendarComponent/calendarComponent.scss");
-/* harmony import */ var _assets_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/data */ "./assets/data.js");
+/* harmony import */ var _assets_data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/data.js */ "./assets/data.js");
 /* harmony import */ var _utils_draggable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/draggable */ "./utils/draggable.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/eventBus */ "./utils/eventBus.js");
 /* harmony import */ var _utils_eventBus__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_utils_eventBus__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _utils_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/store */ "./utils/store.js");
 /* harmony import */ var _tableColumn_tableColumn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tableColumn/tableColumn */ "./components/tableColumn/tableColumn.js");
+/* harmony import */ var _utils_cookies__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/cookies */ "./utils/cookies.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -212,6 +197,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var me = "calendar-component";
 var filter = "All members";
 
@@ -227,7 +213,7 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
 
     _this2 = _super.call(this);
     _this2.data = {
-      isAdmin: Cookies.getCookie("currentUser") ? JSON.parse(Cookies.getCookie("currentUser")).isAdmin : "null"
+      isAdmin: _utils_cookies__WEBPACK_IMPORTED_MODULE_6__.getCookie("currentUser") ? JSON.parse(_utils_cookies__WEBPACK_IMPORTED_MODULE_6__.getCookie("currentUser")).isAdmin : "null"
     };
     return _this2;
   }
@@ -236,11 +222,6 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
     key: "connectedCallback",
     value: function connectedCallback() {
       var _this3 = this;
-
-      this.classList.add('calendar');
-      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_1__.workingHours));
-
-      var _this = this;
 
       this.classList.add("calendar");
       _utils_eventBus__WEBPACK_IMPORTED_MODULE_3__.subscribe("participantFilterChanged", function (value) {
@@ -266,7 +247,7 @@ var calendarComponent = /*#__PURE__*/function (_HTMLElement) {
   }, {
     key: "insertData",
     value: function insertData() {
-      this.appendChild(this.createTable(_assets_data__WEBPACK_IMPORTED_MODULE_1__.workingDays, _assets_data__WEBPACK_IMPORTED_MODULE_1__.workingHours));
+      this.appendChild(this.createTable(_assets_data_js__WEBPACK_IMPORTED_MODULE_1__.workingDays, _assets_data_js__WEBPACK_IMPORTED_MODULE_1__.workingHours));
     }
   }, {
     key: "createTable",
@@ -1378,10 +1359,8 @@ customElements.define('remove-event', _components_removeEvent_removeEvent__WEBPA
 customElements.define('event-flag', _components_eventFlag_eventFlag__WEBPACK_IMPORTED_MODULE_6__.default);
 customElements.define('table-cell', _components_tableCell_tableCell__WEBPACK_IMPORTED_MODULE_7__.default);
 customElements.define('table-column', _components_tableColumn_tableColumn__WEBPACK_IMPORTED_MODULE_8__.default);
-_utils_store__WEBPACK_IMPORTED_MODULE_11__.default.getUsers().then(function () {
-  _utils_store__WEBPACK_IMPORTED_MODULE_11__.default.getEvents().then(function () {
-    render();
-  });
+_utils_store__WEBPACK_IMPORTED_MODULE_11__.default.getData().then(function () {
+  render();
 });
 (0,_utils_eventBus__WEBPACK_IMPORTED_MODULE_9__.subscribe)("logout", function () {
   render();
@@ -2191,8 +2170,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _api_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api/events */ "./utils/api/events.js");
 /* harmony import */ var _api_users__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api/users */ "./utils/api/users.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./eventBus */ "./utils/eventBus.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _cookies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./cookies */ "./utils/cookies.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./eventBus */ "./utils/eventBus.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_3__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2202,6 +2182,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -2252,7 +2233,7 @@ var Store = /*#__PURE__*/function () {
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
         _this.state.events.push(data);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_2__.publish)("refreshEvents");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
       });
     }
   }, {
@@ -2271,7 +2252,7 @@ var Store = /*#__PURE__*/function () {
 
         _this2.state.events.splice(target, target);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_2__.publish)("refreshEvents");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshEvents");
       });
     }
   }, {
@@ -2325,10 +2306,56 @@ var Store = /*#__PURE__*/function () {
       _api_events__WEBPACK_IMPORTED_MODULE_0__.default.post(data).then(function () {
         _this3.state.users.push(data);
 
-        (0,_eventBus__WEBPACK_IMPORTED_MODULE_2__.publish)("refreshUsers");
+        (0,_eventBus__WEBPACK_IMPORTED_MODULE_3__.publish)("refreshUsers");
       })["catch"](function (error) {
         console.log(error);
       });
+    }
+  }, {
+    key: "clearCurrentUser",
+    value: function clearCurrentUser() {
+      _cookies__WEBPACK_IMPORTED_MODULE_2__.deleteCookie("currentUser");
+    }
+  }, {
+    key: "getCurrentUser",
+    value: function () {
+      var _getCurrentUser = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.state.currentUser = JSON.parse(_cookies__WEBPACK_IMPORTED_MODULE_2__.getCookie("currentUser"));
+
+              case 1:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function getCurrentUser() {
+        return _getCurrentUser.apply(this, arguments);
+      }
+
+      return getCurrentUser;
+    }()
+  }, {
+    key: "getData",
+    value: function getData() {
+      var events = this.getEvents();
+      var users = this.getUsers();
+      var current = this.getCurrentUser();
+      var promise = new Promise(function (resolve, reject) {
+        events.then(function () {
+          users.then(function () {
+            current.then(function () {
+              resolve();
+            });
+          });
+        });
+      });
+      return promise;
     }
   }, {
     key: "events",
@@ -2346,6 +2373,13 @@ var Store = /*#__PURE__*/function () {
         return this.state.users;
       } else {
         return new Error("No users in store");
+      }
+    }
+  }, {
+    key: "isAdmin",
+    get: function get() {
+      if (this.state.currentUser) {
+        return this.state.currentUser.isAdmin;
       }
     }
   }]);
