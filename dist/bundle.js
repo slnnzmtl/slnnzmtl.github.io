@@ -1370,9 +1370,7 @@ _utils_store__WEBPACK_IMPORTED_MODULE_11__.default.getData().then(function () {
 });
 
 function render() {
-  var currentUser = _utils_cookies__WEBPACK_IMPORTED_MODULE_10__.getCookie("currentUser");
-
-  if (!currentUser) {
+  if (!_utils_store__WEBPACK_IMPORTED_MODULE_11__.default.isAdmin) {
     main.innerHTML = new _components_authComponent_authComponent_js__WEBPACK_IMPORTED_MODULE_2__.default().outerHTML;
   } else {
     main.innerHTML = new _components_calendarComponent_calendarComponent__WEBPACK_IMPORTED_MODULE_4__.default().outerHTML;
@@ -1993,7 +1991,7 @@ function putElement(element, dropzone) {
     console.log(drop);
     element.data.day = drop.day;
     element.data.time = drop.time;
-    _store__WEBPACK_IMPORTED_MODULE_0__.default.updatePosition(element.dataset.id, drop);
+    _store__WEBPACK_IMPORTED_MODULE_0__.default.updatePosition(element.data.id, drop);
   }
 }
 
