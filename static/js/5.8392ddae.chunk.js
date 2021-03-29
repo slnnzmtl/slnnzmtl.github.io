@@ -1,0 +1,2 @@
+(this["webpackJsonpjs-band-store"]=this["webpackJsonpjs-band-store"]||[]).push([[5],{81:function(t,s,e){},83:function(t,s,e){"use strict";e.r(s);e(1);var n=e(20),c=(e(81),e(0));s.default=function(){return Object(c.jsxs)("div",{className:"not-found",children:[Object(c.jsx)("h1",{className:"not-found__title",children:"404"}),Object(c.jsx)("h2",{className:"not-found__subtitle",children:"PAGE NOT FOUND"}),Object(c.jsx)(n.b,{to:"/",children:"Back to Homepage"})]})}}}]);
+//# sourceMappingURL=5.8392ddae.chunk.js.map
